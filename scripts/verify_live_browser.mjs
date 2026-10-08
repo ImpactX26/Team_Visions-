@@ -29,6 +29,13 @@ try {
     if (response.url().includes("/api/") && response.status() >= 400) failures.push(`API ${response.status()}`);
   });
   await page.goto(origin);
+  await expect(page.getByLabel("Username")).toBeVisible();
+  await page.evaluate(async () => {
+    const transitions = document.getAnimations().filter(animation =>
+      Number.isFinite(animation.effect?.getComputedTiming().iterations ?? 1));
+    await Promise.allSettled(transitions.map(animation => animation.finished));
+  });
+  if (process.env.ECDAT_DEMO_OUTPUT) await page.screenshot({ path: join(process.env.ECDAT_DEMO_OUTPUT, "login-desktop.png") });
   await page.getByLabel("Username").fill(username);
   await page.getByLabel("Password").fill(account.password);
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
@@ -38,7 +45,9 @@ try {
   await page.getByRole("textbox", { name: "Repository path", exact: true }).fill(join(root, "test-repo"));
   const accepted = page.waitForResponse(r => r.url().endsWith("/api/scan") && r.request().method() === "POST");
   await page.getByRole("button", { name: "Start scan", exact: true }).click();
-  const job = await (await accepted).json();
+  const scanResponse = await accepted;
+  if (!scanResponse.ok()) throw new Error(`Browser scan submission failed: HTTP ${scanResponse.status()}`);
+  const job = await scanResponse.json();
   const session = await page.evaluate(() => JSON.parse(sessionStorage.getItem("ecdat-session")));
   const headers = { Authorization: `Bearer ${session.accessToken}` };
   const get = async path => {
@@ -49,6 +58,11 @@ try {
   await expect.poll(async () => (await get(`/api/scans/${job.scan_id}`)).status, { timeout: 90000 }).toBe("completed");
   console.log("PASS live browser scan submission and real worker completion");
   const inventory = await get(`/api/assets?scan_job_id=${job.scan_id}&limit=200`);
+  if (process.env.ECDAT_DEMO_OUTPUT) {
+    await page.goto(`${origin}/assets?scan_id=${job.scan_id}`);
+    await expect(page.getByRole("heading", { name: "Cryptographic assets", exact: true })).toBeVisible();
+    await page.screenshot({ path: join(process.env.ECDAT_DEMO_OUTPUT, "inventory-desktop.png") });
+  }
   const before = inventory.items.find(a => a.algorithm === "RSA" && a.evidence_kind === "observed_operation");
   if (!before) throw new Error("Fixture RSA operation missing");
   await page.goto(`${origin}/assets/${before.id}`);
@@ -64,6 +78,7 @@ try {
   }
   await page.reload();
   await expect(page.locator("select#exposure")).toHaveValue(exposure);
+  if (process.env.ECDAT_DEMO_OUTPUT) await page.screenshot({ path: join(process.env.ECDAT_DEMO_OUTPUT, "risk-evidence-desktop.png"), fullPage: true });
   console.log("PASS live browser risk edit and reload with evidence/provenance preserved");
   for (const [path, heading] of [
     [`/assets?scan_id=${job.scan_id}`, "Cryptographic assets"],
@@ -96,6 +111,7 @@ try {
   await expect(button).toBeVisible();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   expect(overflow).toBe(false);
+  if (process.env.ECDAT_DEMO_OUTPUT) await page.screenshot({ path: join(process.env.ECDAT_DEMO_OUTPUT, "cbom-mobile.png"), fullPage: true });
   expect(failures).toEqual([]);
   await writeFile(join(folder, "browser-result.json"), JSON.stringify({ scanId: job.scan_id, assetId: before.id, updated }));
   console.log("PASS inventory/detail/report/graph routes and 375px CBOM layout; no browser/API errors");

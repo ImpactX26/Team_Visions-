@@ -87,3 +87,12 @@ loop-*
 gate.yaml
 patterns/
 graphify-out/
+
+# Local verification captures (keep summary reports and curated demo evidence)
+docs/verification/
+docs/cyber-evidence/**
+!docs/cyber-evidence/**/
+!docs/cyber-evidence/**/glass-console.png
+
+# Accidental terminal-output file; preserve locally
+/h -u submission HEADteam-development

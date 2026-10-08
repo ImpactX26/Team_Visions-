@@ -6,34 +6,34 @@
 
 /* ── Surfaces ─────────────────────────────────────────────────────── */
 :root {
-  --color-page: #f4f1ea;
-  --color-surface: #fdfcf9;
-  --color-surface-alt: #f5f3ed;
-  --color-surface-2: #f0ede6;
-  --color-surface-3: #eae6dd;
-  --color-bg: #f4f1ea;
-  --color-bg-2: #eae6dd;
+  --color-page: #f0f5fa;
+  --color-surface: #ffffff;
+  --color-surface-alt: #edf3f8;
+  --color-surface-2: #e8f0f7;
+  --color-surface-3: #dce7f0;
+  --color-bg: #f0f5fa;
+  --color-bg-2: #dce7f0;
 
   /* ── Text ──────────────────────────────────────────────────────── */
-  --color-ink: #1c1a17;
-  --color-ink-soft: #3d3830;
-  --color-text: #1c1a17;
-  --color-text-soft: #3d3830;
-  --color-muted: #686256;
-  --color-muted-soft: #716b60;
-  --color-stone: #686256;
-  --color-stone-light: #716b60;
+  --color-ink: #10263b;
+  --color-ink-soft: #304b65;
+  --color-text: #10263b;
+  --color-text-soft: #304b65;
+  --color-muted: #52677e;
+  --color-muted-soft: #5e7185;
+  --color-stone: #52677e;
+  --color-stone-light: #5e7185;
 
   /* ── Rules ─────────────────────────────────────────────────────── */
-  --color-rule: #cec7ba;
-  --color-rule-heavy: #b8b0a4;
+  --color-rule: #d0dce8;
+  --color-rule-heavy: #a8becf;
 
   /* ── Accent ─────────────────────────────────────────────────────── */
-  --color-forest: #2d4f3e;
-  --color-forest-bright: #3a6b54;
-  --color-teal: #0a7d6e;
-  --color-teal-bright: #0e9a88;
-  --color-teal-wash: #e2f5f2;
+  --color-forest: #006e83;
+  --color-forest-bright: #00566b;
+  --color-teal: #006e83;
+  --color-teal-bright: #00788d;
+  --color-teal-wash: #def3f8;
   --color-indigo: #4a54d0;
   --color-indigo-wash: #eef0ff;
   --color-violet: #8b5cf6;
@@ -56,32 +56,32 @@
    Dark Theme — same token names, different values
    ═══════════════════════════════════════════════════════════════════ */
 [data-theme="dark"] {
-  --color-page: #050505;
-  --color-surface: #0c0c0c;
-  --color-surface-alt: #141414;
-  --color-surface-2: #1a1a1a;
-  --color-surface-3: #0f0f0f;
-  --color-bg: #050505;
-  --color-bg-2: #0f0f0f;
+  --color-page: #070d18;
+  --color-surface: #0d1726;
+  --color-surface-alt: #15253a;
+  --color-surface-2: #182b42;
+  --color-surface-3: #122034;
+  --color-bg: #070d18;
+  --color-bg-2: #122034;
 
-  --color-ink: #f5f5f5;
-  --color-ink-soft: #d4d4d4;
-  --color-text: #d4d4d4;
-  --color-text-soft: #a3a3a3;
-  --color-muted: #969696;
-  --color-muted-soft: #858585;
-  --color-stone: #969696;
-  --color-stone-light: #858585;
+  --color-ink: #e8f1fc;
+  --color-ink-soft: #c0d0e1;
+  --color-text: #c0d0e1;
+  --color-text-soft: #adbed2;
+  --color-muted: #9bb3cc;
+  --color-muted-soft: #8da6bf;
+  --color-stone: #9bb3cc;
+  --color-stone-light: #8da6bf;
 
-  --color-rule: #1f1f1f;
-  --color-rule-heavy: #2a2a2a;
+  --color-rule: #22364c;
+  --color-rule-heavy: #3a5671;
 
-  --color-forest: #2d5a3f;
-  --color-forest-bright: #3d7a54;
-  --color-teal: #0d9488;
-  --color-teal-bright: #14b8a6;
+  --color-forest: #54f6b1;
+  --color-forest-bright: #a5ffd7;
+  --color-teal: #54f6b1;
+  --color-teal-bright: #54f6b1;
   --color-teal-wash: rgba(20, 184, 166, 0.06);
-  --color-indigo: #5b6fe6;
+  --color-indigo: #9aafff;
   --color-indigo-wash: rgba(91, 111, 230, 0.06);
   --color-violet: #8b5cf6;
   --color-violet-wash: rgba(139, 92, 246, 0.08);
@@ -98,9 +98,9 @@
   --color-emerald-wash: #e6f5f0;
   --color-emerald-soft: #4a9e80;
 
-  --color-amber: #d4a43a;
+  --color-amber: #f1bf65;
   --color-amber-wash: rgba(245, 158, 11, 0.06);
-  --color-red: #ef4444;
+  --color-red: #ff929b;
   --color-red-wash: rgba(239, 68, 68, 0.06);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -242,8 +242,8 @@
   --risk-critical-bg: rgba(239, 68, 68, 0.1);
   --risk-critical-text: var(--color-red);
   --risk-critical-rule: rgba(239, 68, 68, 0.2);
-  --risk-high-bg: #fef3e6;
-  --risk-high-text: #c2410c;
+  --risk-high-bg: var(--color-amber-wash);
+  --risk-high-text: var(--color-amber);
   --risk-high-rule: rgba(249, 115, 22, 0.2);
   --risk-medium-bg: var(--color-amber-wash);
   --risk-medium-text: var(--color-amber);

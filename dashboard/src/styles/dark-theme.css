@@ -1,159 +1,260 @@
-/* ═══════════════════════════════════════════════════════════════════
-   Dark Theme Enhancements — Visual effects not covered by tokens
-   Core dark values (surfaces, text, accents) are in tokens.css.
-   Component-level color/border/background overrides are handled
-   by the token system. This file retains only enhancement effects:
-   glows, gradients, box-shadows, and special contrast colors.
-   ═══════════════════════════════════════════════════════════════════ */
-
-/* ── Topbar ──────────────────────────────────────────────────────── */
-[data-theme="dark"] .topbar nav a.active::after {
-  background: var(--color-teal-bright);
-  box-shadow: 0 0 8px rgba(20, 184, 166, 0.25);
-}
-
-/* ── Table depth ─────────────────────────────────────────────────── */
-[data-theme="dark"] .table-wrap th {
-  box-shadow:
-    0 1px 0 var(--color-rule),
-    0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] .table-wrap tbody tr:hover td:first-child {
-  border-left-color: var(--color-teal-bright);
-}
-
-/* ── Panel depth ─────────────────────────────────────────────────── */
-[data-theme="dark"] .panel {
-  background: linear-gradient(180deg, var(--color-bg-2) 0%, var(--color-bg) 100%);
-  border-color: rgba(255, 255, 255, 0.04);
-}
-
-/* ── Button glow ─────────────────────────────────────────────────── */
-[data-theme="dark"] .button:hover:not(:disabled) {
-  box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.4),
-    0 0 14px rgba(45, 212, 167, 0.06);
-}
-
-/* ── Stat card hover ─────────────────────────────────────────────── */
-[data-theme="dark"] .stat:hover {
-  box-shadow:
-    var(--shadow-md),
-    0 0 0 1px var(--color-rule-heavy);
-}
-
-/* ── CBOM glows ──────────────────────────────────────────────────── */
-[data-theme="dark"] .cbom-component-card:hover {
-  box-shadow:
-    var(--shadow-md),
-    0 0 0 1px var(--color-rule-heavy);
-}
-
-[data-theme="dark"] .cbom-component-card.cbom-risk-critical::before {
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
-}
-
-[data-theme="dark"] .cbom-component-card.cbom-risk-high::before {
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
-}
-
-[data-theme="dark"] .cbom-component-card.cbom-risk-medium::before {
-  box-shadow: 0 0 12px rgba(212, 164, 58, 0.25);
-}
-
-[data-theme="dark"] .cbom-component-card.cbom-risk-low::before {
-  box-shadow: 0 0 12px rgba(20, 184, 166, 0.2);
-}
-
-/* ── MOSCA ───────────────────────────────────────────────────────── */
-[data-theme="dark"] .mosca {
-  border-color: rgba(20, 184, 166, 0.15);
-}
-
-[data-theme="dark"] .mosca::before {
-  background: var(--color-teal);
-}
-
-[data-theme="dark"] .mosca .mosca-threat-note {
-  color: var(--color-teal-bright);
-}
-
-[data-theme="dark"] .mosca-warning::before {
-  background: var(--color-amber);
-}
-
-/* ── Scan filter banner ──────────────────────────────────────────── */
-[data-theme="dark"] .scan-filter-banner {
-  background: rgba(91, 111, 230, 0.08);
-  border-color: rgba(91, 111, 230, 0.2);
-}
-
-/* ── Callout contrast ────────────────────────────────────────────── */
-[data-theme="dark"] .callout-error {
-  background: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
-}
-
-[data-theme="dark"] .callout-amber {
-  background: rgba(245, 158, 11, 0.1);
-  color: #fcd34d;
-}
-
-[data-theme="dark"] .callout-success {
-  background: rgba(20, 184, 166, 0.1);
-  color: #2dd4a7;
-}
-
-/* ── Typography lift ─────────────────────────────────────────────── */
-[data-theme="dark"] .muted {
-  color: var(--color-muted);
-}
-
-[data-theme="dark"] small {
-  color: var(--color-muted);
-}
-
-[data-theme="dark"] .eyebrow {
-  color: var(--color-teal-bright);
-}
-
-/* ── Page background atmosphere ──────────────────────────────────── */
-[data-theme="dark"] main {
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba(20, 184, 166, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(91, 111, 230, 0.03) 0%, transparent 50%),
-    var(--color-page);
-}
-
-/* ── Login focus colors ──────────────────────────────────────────── */
-[data-theme="dark"] .float-field--active label,
-[data-theme="dark"] .float-field input:focus {
-  color: var(--color-teal-bright);
-}
-
-[data-theme="dark"] .float-field input:focus,
-[data-theme="dark"] .float-field--active input {
-  border-color: var(--color-forest-bright);
-  background: var(--color-surface-alt);
-}
-
-/* ── Status pulse animation ──────────────────────────────────────── */
-@keyframes pulse-status-dark {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
+/* Web frosted-glass approximation; semantic colors live in workspace.css. */
+@supports (backdrop-filter: blur(1px)) {
+  [data-theme="dark"] {
+    --ws-glass: linear-gradient(135deg, #d3f5ff1a, #162c4099 45%, #21304570);
   }
 }
 
-[data-theme="dark"] .status-running {
-  animation: pulse-status-dark 2s ease-in-out infinite;
+[data-theme="dark"] #root {
+  background-image:
+    radial-gradient(ellipse at 18% 12%, #1c72644d, transparent 48%),
+    radial-gradient(ellipse at 90% 22%, #3457b847, transparent 48%),
+    radial-gradient(ellipse at 50% 90%, #23455c33, transparent 55%);
+  background-attachment: fixed;
 }
-
-/* ── Risk badge border ───────────────────────────────────────────── */
-[data-theme="dark"] .risk-badge {
-  border-color: var(--color-rule);
+.topbar .brand span {
+  font: 750 19px var(--ws-mono);
+  letter-spacing: 0.08em;
+}
+.topbar {
+  backdrop-filter: none;
+  background: linear-gradient(110deg, #10282ded, #101a2eed);
+  border-bottom-color: var(--ws-border-strong);
+  box-shadow: none;
+}
+.topbar-nav a.active {
+  color: var(--ws-primary);
+}
+.topbar-nav a.active::after {
+  background: var(--ws-primary);
+}
+[data-theme="dark"] .topbar-nav .topbar-scan-link {
+  background: linear-gradient(115deg, var(--ws-primary), #5ddcf5) !important;
+}
+.hero h1 {
+  letter-spacing: -0.045em;
+  font-weight: 750;
+}
+.hero .eyebrow::before {
+  content: "// ";
+  background: none;
+  width: auto;
+}
+.panel-title h2,
+.recent-header h2 {
+  font-family: var(--ws-mono);
+  font-size: 15px;
+}
+[data-theme="dark"]
+  :is(
+    .panel,
+    .dashboard-posture,
+    .dashboard-urgent,
+    .dashboard-assurance,
+    .dashboard-recent,
+    .dashboard-trends,
+    .dashboard-attention,
+    .assets-toolbar,
+    .cbom-section,
+    .login-panel--form
+  ) {
+  background: var(--ws-glass, var(--ws-surface));
+  backdrop-filter: blur(20px);
+  border: 1px solid #d0ecff20;
+  box-shadow:
+    inset 0 1px 0 #ffffff16,
+    0 16px 48px #020a1533;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+.panel:hover,
+.dashboard-posture:hover {
+  border-color: #7becd24d;
+  box-shadow:
+    inset 0 1px 0 #ffffff20,
+    0 18px 48px #020a154d;
+}
+.dashboard-posture {
+  border-left: 3px solid var(--ws-primary);
+}
+.button {
+  border-radius: 9px;
+}
+.login-shell {
+  display: grid;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 48px 0;
+  width: min(1240px, calc(100% - 80px));
+  grid-template-columns: minmax(0, 640px) minmax(0, 400px);
+  gap: 64px;
+}
+.login-context {
+  display: grid;
+  min-width: 0;
+  gap: 36px;
+}
+.login-context-title {
+  max-width: 18ch;
+  font-size: clamp(38px, 4.7vw, 66px);
+  font-weight: 750;
+  line-height: 1.04;
+  letter-spacing: -0.05em;
+}
+.login-context-title em {
+  color: var(--ws-primary);
+  font-style: normal;
+}
+.login-signal {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 22px;
+  padding: 0;
+  border: 0;
+}
+.login-panel--form {
+  position: relative;
+  padding: 36px;
+  border-radius: 20px;
+  border-color: var(--ws-border-strong);
+  border-top: 1px solid var(--ws-primary);
+}
+.login-panel--form::before {
+  content: "01 / OPERATOR ACCESS";
+  display: block;
+  margin-bottom: 28px;
+  color: var(--ws-primary);
+  font: 11px var(--ws-mono);
+  letter-spacing: 0.12em;
+}
+.login-card-title {
+  font-size: 30px;
+}
+@media (min-width: 1151px) {
+  .topbar {
+    grid-template-columns: 1fr auto auto;
+    padding: 0 28px;
+    gap: 16px;
+  }
+  .topbar-nav {
+    position: fixed;
+    top: var(--ws-header);
+    bottom: 0;
+    left: 0;
+    width: 216px;
+    margin: 0;
+    padding: 36px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    background: var(--ws-glass, var(--ws-surface-strong));
+    backdrop-filter: blur(24px);
+    border-right: 1px solid var(--ws-border);
+  }
+  .topbar-nav::before {
+    content: "WORKSPACE / ECDAT";
+    margin: 0 12px 18px;
+    color: #94b0a8;
+    font: 10px var(--ws-mono);
+    letter-spacing: 0.12em;
+  }
+  .topbar-nav a {
+    min-height: 48px;
+    gap: 14px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+  }
+  .topbar-nav a::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: rotate(45deg);
+    color: #66877d;
+  }
+  .topbar-nav a.active {
+    border-color: var(--ws-border-strong);
+    background: linear-gradient(110deg, #54f6b122, #54f6b10a);
+  }
+  .topbar-nav a.active::before {
+    color: var(--ws-primary);
+  }
+  .topbar-nav a.active::after {
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    height: auto;
+  }
+  .topbar-nav .topbar-scan-link {
+    margin: 12px 0;
+  }
+  .topbar-nav .topbar-scan-link::before {
+    display: none;
+  }
+  .app-shell > main {
+    width: calc(100% - 280px);
+    margin-left: 248px;
+    max-width: 1500px;
+  }
+  .app-shell > footer {
+    margin-left: 216px;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  [data-theme="dark"]
+    :is(
+      .panel,
+      .dashboard-posture,
+      .dashboard-urgent,
+      .dashboard-assurance,
+      .dashboard-recent,
+      .dashboard-trends,
+      .dashboard-attention,
+      .assets-toolbar,
+      .cbom-section,
+      .login-panel--form,
+      .topbar-nav
+    ) {
+    background: var(--ws-surface);
+    backdrop-filter: none;
+  }
+}
+@media (max-width: 900px) {
+  .login-shell {
+    width: min(560px, calc(100% - 48px));
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .login-context-title {
+    font-size: 40px;
+  }
+  .login-signal {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
+  .login-shell {
+    width: calc(100% - 32px);
+    padding: 28px 0;
+    gap: 24px;
+  }
+  .login-context {
+    gap: 20px;
+  }
+  .login-context-title {
+    font-size: 32px;
+  }
+  .login-panel--form {
+    padding: 24px;
+  }
+  .login-panel--form::before {
+    margin-bottom: 16px;
+  }
 }

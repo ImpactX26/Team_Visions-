@@ -1,6 +1,6 @@
 # ECDAT implementation plan informed by IBM Explorer and Keyfactor AgileSec
 
-Prepared: 8 October 2026, India time. Status: Stages 0–1 passed; Stage 2 backend export passed. Frontend integration belongs to the user's friends. Later stages remain planned; see the stage evidence reports below.
+Prepared: 8 October 2026, India time. Status: Stages 0–1 passed; Stage 2 export and the explicitly authorized CBOM download integration passed. Other frontend improvements belong to the user's friends. Full dependency release gate remains open for two development dependency packages; see [integration verification](integration-verification-2026-10-08.md). Later stages remain planned.
 
 ## Objective and boundary
 
@@ -68,7 +68,7 @@ Define no-op behavior and default/reset semantics. If explicit reset requires an
 
 ## Stage 2 — Separate a complete CBOM export from the paginated UI
 
-Backend completed: PASS. `/api/exports/cbom` supplies a complete bounded snapshot, official offline schema validation, safe evidence and risk provenance. Combined gate: 460 passed, four Windows skips, 95 subtests; live 68-finding fixture export validated. See [Stage 2 evidence](stage-2-cbom-verification-2026-10-08.md) and [endpoint contract](cbom-export-contract.md). Frontend download integration is reserved for the friends' workstream. Native cryptoProperties mapping remains the separate post-event extension.
+Backend completed: PASS. `/api/exports/cbom` supplies a complete bounded snapshot, official offline schema validation, safe evidence and risk provenance. Combined gate: 460 passed, four Windows skips, 95 subtests; live 68-finding fixture export validated. See [Stage 2 evidence](stage-2-cbom-verification-2026-10-08.md) and [endpoint contract](cbom-export-contract.md). The user subsequently authorized only the CBOM download connection, now integrated and verified through the real browser/API rehearsal; see [integration verification](integration-verification-2026-10-08.md). Native cryptoProperties mapping remains the separate post-event extension.
 
 **Time:** 3–5 hours. **Files:** `backend/routers/outputs.py`, proposed `backend/services/cbom_export.py`, `scripts/validate_schema.py`, `backend/tests/test_cbom.py`, `dashboard/src/pages/CbomPage.tsx`, related tests; proposed `schemas/cyclonedx/1.6/`.
 
@@ -86,6 +86,8 @@ Choose an existing installed schema validator if available; otherwise treat a de
 
 ## Stage 3 — Make a clear three-minute judge workflow
 
+Materials and automated verification: PASS. The timed walkthrough, three verified controls and offline screenshots/exports are ready. The unfamiliar-presenter trial remains pending at the user's request; the complete Stage 3 exit is not yet satisfied. See [Stage 3 evidence](stage-3-judge-workflow-2026-10-08.md) and [walkthrough](impactx-demo.md).
+
 **Time:** 1.5–2.5 hours. **Files:** existing `Dashboard.tsx`, `ScanPage.tsx`, `ScanDetailPage.tsx`, `AssetDetail.tsx`, `RiskReport.tsx` as needed; `demo-repositories/`; proposed `docs/impactx-demo.md`.
 
 Use controlled positive, negative, and mixed-risk fixtures. Reuse current pages and components. Demonstrate discovery → evidence → risk context → recommendation → export. Show supported-file processing, failures, observed operations versus declared capabilities, and which migration inputs are assumptions. Explain heuristic confidence and corpus-specific accuracy in plain language. Reuse current editing/provenance UI once Stage 1 is verified.
@@ -95,6 +97,8 @@ For today's hosted demo, prefer a fixed allowlisted repository and authenticated
 **Exit:** someone unfamiliar with ECDAT completes the scripted path without coaching; desktop and 375px views remain usable; failures are visible; offline screenshots and pre-generated fixture outputs support the same truthful story.
 
 ## Stage 4 — Release and submission gate
+
+Full verification has been run: functional local gates passed, but the complete release gate failed at two frontend development dependency advisory packages. Stage 3 human trial is still pending. No submission packaging or push was performed. See [full verification](full-verification-2026-10-08.md).
 
 **Time:** 2–4 hours reserved. **Dependency:** selected earlier stages complete.
 

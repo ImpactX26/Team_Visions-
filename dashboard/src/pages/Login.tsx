@@ -14,17 +14,6 @@ export default function Login({
   const [error, setError] = useState(message);
   const [busy, setBusy] = useState(false);
 
-  // Login page must always render in light mode — cryptographic assurance identity
-  useEffect(() => {
-    const root = document.documentElement;
-    const prev = root.getAttribute("data-theme");
-    root.setAttribute("data-theme", "light");
-    return () => {
-      if (prev === null) root.removeAttribute("data-theme");
-      else root.setAttribute("data-theme", prev);
-    };
-  }, []);
-
   useEffect(() => setError(message), [message]);
 
   const submit = async (e: FormEvent) => {
@@ -62,13 +51,20 @@ export default function Login({
             </div>
           </div>
           <div className="login-panel-body">
+            <p className="eyebrow">Cryptographic intelligence</p>
             <p className="login-context-title">
-              Enterprise Cryptographic Discovery &amp; Analysis Tool
+              Discover. Defend.
+              <br />
+              <em>Become quantum ready.</em>
             </p>
             <p>
-              Correlate source, dependency, certificate, and rule evidence into an inventory your
-              security team can defend.
+              Discover cryptography. Trace the evidence. Prioritize your path to quantum readiness.
             </p>
+            <img
+              className="login-signal"
+              src="/crypto-shield.svg"
+              alt="Source, dependencies and certificates connected to a cryptographic shield"
+            />
           </div>
         </aside>
         <section className="login-panel--form" aria-labelledby="login-heading">
@@ -77,7 +73,7 @@ export default function Login({
               Sign in
             </h1>
             <p className="login-card-desc">
-              Authenticated access to the cryptographic inventory and discovery-assurance console.
+              Access your cryptographic inventory and risk workspace.
             </p>
 
             {error && (

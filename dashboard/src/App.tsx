@@ -1,5 +1,5 @@
 // Application shell and navigation for the ECDAT assurance console.
-import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react";
+import { lazy, Suspense, useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import {
   logout,
   canWrite,
@@ -9,40 +9,13 @@ import {
   SESSION_EXPIRED,
 } from "./api/client";
 import { NavLink, Route, Routes, useSearchParams, useLocation } from "react-router-dom";
-import { MotionConfig, AnimatePresence, motion } from "framer-motion";
+import { MotionConfig } from "framer-motion";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ToastProvider, useToast } from "./components/Toast";
 import { ConfirmDialog } from "./components/ConfirmDialog";
 import ThemeToggle from "./components/ThemeToggle";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-
-// ── Page transition configuration ──────────────────────────────
-const pageVariants = {
-  initial: { opacity: 0, y: 12, scale: 0.995 },
-  animate: { opacity: 1, y: 0, scale: 1 },
-  exit: { opacity: 0, y: -8, scale: 0.995 },
-};
-
-const pageTransition = {
-  duration: 0.22,
-  ease: [0.25, 0.1, 0.25, 1],
-};
-
-function PageTransition({ children, routeKey }: { children: React.ReactNode; routeKey: string }) {
-  return (
-    <motion.div
-      key={routeKey}
-      variants={pageVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      transition={pageTransition}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const AssetDetail = lazy(() => import("./pages/AssetDetail"));
@@ -123,7 +96,7 @@ function AppInner() {
     requestAnimationFrame(() => firstDestination?.focus());
   }, [mobileNavOpen]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setMobileNavOpen(false);
   }, [location.pathname, location.search]);
 
@@ -184,7 +157,7 @@ function AppInner() {
         <NavLink className="brand" to="/">
           <img className="brand-mark" src="/ecdat-logo.svg" alt="" aria-hidden="true" />
           <span>
-            ECDAT<small>Assurance</small>
+            ECDAT<small>Security console</small>
           </span>
         </NavLink>
         <nav
@@ -363,90 +336,18 @@ function AppInner() {
           }
         >
           <ErrorBoundary>
-            <AnimatePresence mode="wait">
-              <Routes location={location} key={location.pathname + location.search}>
-                <Route
-                  path="/"
-                  element={
-                    <PageTransition routeKey="dashboard">
-                      <Dashboard />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="/assets"
-                  element={
-                    <PageTransition routeKey="assets">
-                      <AssetsPage />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="/assets/:id"
-                  element={
-                    <PageTransition routeKey="asset-detail">
-                      <AssetDetail />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="/scan"
-                  element={
-                    <PageTransition routeKey="scan">
-                      <ScanPage />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="/reports"
-                  element={
-                    <PageTransition routeKey="reports">
-                      <RiskReportPage />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="/cbom"
-                  element={
-                    <PageTransition routeKey="cbom">
-                      <CbomPage />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="/scans"
-                  element={
-                    <PageTransition routeKey="scan-history">
-                      <ScanHistoryPage />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="/scans/:id"
-                  element={
-                    <PageTransition routeKey="scan-detail">
-                      <ScanDetailPage />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="/evidence-graph"
-                  element={
-                    <PageTransition routeKey="evidence-graph">
-                      <EvidenceGraphPage />
-                    </PageTransition>
-                  }
-                />
-                <Route
-                  path="*"
-                  element={
-                    <PageTransition routeKey="not-found">
-                      <NotFound />
-                    </PageTransition>
-                  }
-                />
-              </Routes>
-            </AnimatePresence>
+            <Routes location={location} key={location.pathname + location.search}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/assets" element={<AssetsPage />} />
+              <Route path="/assets/:id" element={<AssetDetail />} />
+              <Route path="/scan" element={<ScanPage />} />
+              <Route path="/reports" element={<RiskReportPage />} />
+              <Route path="/cbom" element={<CbomPage />} />
+              <Route path="/scans" element={<ScanHistoryPage />} />
+              <Route path="/scans/:id" element={<ScanDetailPage />} />
+              <Route path="/evidence-graph" element={<EvidenceGraphPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </ErrorBoundary>
         </Suspense>
       </main>

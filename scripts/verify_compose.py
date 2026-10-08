@@ -106,6 +106,16 @@ def main():
                             raise
                         time.sleep(0.2)
                 print(f'Docker/PostgreSQL round {round_no}/3 passed; persisted scan {scan}')
+        except Exception:
+            # Retain bounded, redacted diagnostics before this test stack is removed.
+            logs = subprocess.run(command + ['logs', '--no-color', '--tail', '100', 'backend'],
+                                  cwd=ROOT, env=env, capture_output=True, text=True, timeout=30,
+                                  check=False)
+            diagnostic = logs.stdout + logs.stderr
+            for secret in (password, env['ECDAT_DB_PASSWORD'], env['ECDAT_TOKEN_SECRET']):
+                diagnostic = diagnostic.replace(secret, '[REDACTED]')
+            print(diagnostic)
+            raise
         finally:
             # Only this randomly named verification project is destroyed.
             compose('down', '--volumes', '--remove-orphans')

@@ -1,5 +1,5 @@
 // Renders a color-coded badge for risk severity levels.
-// CRITICAL and HIGH badges pulse to draw attention.
+// Severity stays legible without decorative animation.
 import { memo } from "react";
 
 interface Props {
@@ -22,13 +22,12 @@ const SIZE_CLASS: Record<string, string> = {
 
 export const RiskBadge = memo(function RiskBadge({ label, score, size = "md" }: Props) {
   const cls = CLASS[label] || "";
-  const pulse = label === "CRITICAL" || label === "HIGH";
   return (
     <span
       className={`risk-badge ${cls} ${SIZE_CLASS[size]}`}
       title={score != null ? `Priority score: ${score}` : undefined}
     >
-      <span className={`dot${pulse ? " pulse-dot" : ""}`} />
+      <span className="dot" aria-hidden="true" />
       {label}
       {score != null ? (size === "sm" ? ` ${score}` : ` (${score})`) : ""}
     </span>

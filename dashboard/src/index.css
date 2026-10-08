@@ -25,11 +25,11 @@
 @import "./styles/cbom.css"; /* CBOM page styles */
 @import "./styles/feedback.css"; /* Toast, skeleton, confirm dialog, error boundary */
 @import "./styles/enhancements.css"; /* Theme toggle, progress, evidence pre */
-@import "./styles/dark-theme.css"; /* Dark theme visual enhancements */
 @import "./styles/responsive.css"; /* Breakpoint overrides (keep last for specificity) */
 @import "./styles/utilities.css"; /* Focus, tone, and one-off utility classes */
 @import "./styles/workspace.css"; /* Unified assurance workspace — final visual authority */
 @import "./styles/auth.css"; /* Scoped login layout after shared workspace rules */
+@import "./styles/dark-theme.css"; /* Cyber console composition */
 
 /* ═══════════════════════════════════════════════════════════════════
    Print Styles — reports and dashboards

@@ -1,0 +1,41 @@
+[
+  {
+    "fixture": "positive-control",
+    "findings": 12,
+    "algorithms": [
+      "AES",
+      "ECDSA",
+      "HMAC",
+      "RSA",
+      "SHA-256"
+    ],
+    "status": "completed",
+    "evidence_kinds": [
+      "declared_capability",
+      "observed_operation"
+    ]
+  },
+  {
+    "fixture": "negative-control",
+    "findings": 0,
+    "algorithms": [],
+    "status": "completed",
+    "evidence_kinds": []
+  },
+  {
+    "fixture": "mixed-risk",
+    "findings": 12,
+    "algorithms": [
+      "AES",
+      "ECDSA",
+      "MD5",
+      "RSA",
+      "SHA-1"
+    ],
+    "status": "completed",
+    "evidence_kinds": [
+      "declared_capability",
+      "observed_operation"
+    ]
+  }
+]

@@ -1,0 +1,1739 @@
+{
+  "$schema": "https://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:d918d9db-77b3-4278-aca5-db28792b9b8b",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-08T10:25:48.693147+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "ECDAT",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "ecdat:scan:id",
+        "value": "2"
+      },
+      {
+        "name": "ecdat:repository:path",
+        "value": "<working-copy>\\demo-repositories\\positive-control"
+      },
+      {
+        "name": "ecdat:scan:result-version",
+        "value": "1"
+      },
+      {
+        "name": "ecdat:scan:coverage-percent",
+        "value": "100.0"
+      },
+      {
+        "name": "ecdat:scan:in-scope-files",
+        "value": "1"
+      },
+      {
+        "name": "ecdat:scan:scanned-files",
+        "value": "1"
+      },
+      {
+        "name": "ecdat:scan:failed-files",
+        "value": "0"
+      },
+      {
+        "name": "ecdat:scan:blind-spots",
+        "value": "[\"Runtime-generated cryptography is outside static scan scope\", \"Compiled binaries and obfuscated bytecode require binary analysis\", \"Container images, cloud services, network traffic and HSMs are not inspected\", \"Source profile excludes .git, node_modules, dist, build, __pycache__, .venv, venv and env directories\", \"Coverage measures files processed without reported collector errors, not detection completeness\", \"Linked directories/files are excluded; oversized files count as processing failures\", \"Memory budget of 512 MB enforced; remaining files skipped on budget exhaustion\"]"
+      },
+      {
+        "name": "ecdat:export:findings",
+        "value": "12"
+      },
+      {
+        "name": "ecdat:export:mapping",
+        "value": "ECDAT inventory properties; not native cryptographic-asset semantics"
+      },
+      {
+        "name": "ecdat:export:consistency",
+        "value": "single database statement snapshot including risk context"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:69",
+      "name": "AES",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "AES"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"rule\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"rule\": 0.82}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"AES\", \"asset_id\": \"52d07ae9-8955-4360-854a-bb96dff84793\", \"category\": \"encryption\", \"confidence\": 0.82, \"confidence_reasons\": [{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}], \"evidence\": {\"key_size\": null, \"library\": \"\", \"pattern\": \"AES\", \"protocol\": \"\", \"rule_id\": \"crypto.aes\", \"snippet\": \"[REDACTED]\", \"usage\": \"encryption\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"rule-v1\", \"source\": \"rule\", \"span\": {\"column_end\": 3, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 11, \"line_start\": 11}}], \"linked_evidence\": [], \"operation_anchor\": \"line:11:column:0\", \"parser_version\": \"rule-v1\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "20"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "LOW"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Retain symmetric design; prefer AES-256 for long-lived data"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"AES has no modeled Shor-algorithm exposure\", \"Mosca window 13y does not overlap 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "8e79a569bf6da650"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "rule-v1"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 3, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 11, \"line_start\": 11}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609837"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:70",
+      "name": "AES",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "AES"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"ast\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"ast\": 0.9}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"AES\", \"asset_id\": \"0d7726a0-183e-4175-867e-f008c78a60bd\", \"category\": \"encryption\", \"confidence\": 0.9, \"confidence_reasons\": [{\"base\": 0.9, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"direct call site confirmed in source\", \"penalty\": 0.0, \"source\": \"ast\"}], \"evidence\": {\"call\": \"Crypto.Cipher.AES.new\", \"usage\": \"encryption\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"ast-v3\", \"source\": \"ast\", \"span\": {\"column_end\": 30, \"column_start\": 4, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 11, \"line_start\": 11}}], \"linked_evidence\": [], \"operation_anchor\": \"line:11:column:4\", \"parser_version\": \"ast-v3\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "20"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "LOW"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Retain symmetric design; prefer AES-256 for long-lived data"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"AES has no modeled Shor-algorithm exposure\", \"Mosca window 13y does not overlap 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "2e8939b6a5b4d19b"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "ast-v3"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 30, \"column_start\": 4, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 11, \"line_start\": 11}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.9, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"direct call site confirmed in source\", \"penalty\": 0.0, \"source\": \"ast\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609839"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:71",
+      "name": "AES",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "AES"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"rule\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"rule\": 0.82}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"AES\", \"asset_id\": \"299e18f2-c0c4-4459-83bb-910caac2143d\", \"category\": \"encryption\", \"confidence\": 0.82, \"confidence_reasons\": [{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}], \"evidence\": {\"key_size\": null, \"library\": \"PyCryptodome\", \"pattern\": \"AES\", \"protocol\": \"\", \"rule_id\": \"crypto.aes\", \"snippet\": \"[REDACTED]\", \"usage\": \"encryption\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"rule-v1\", \"source\": \"rule\", \"span\": {\"column_end\": 3, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 4, \"line_start\": 4}}], \"linked_evidence\": [], \"operation_anchor\": \"line:4:column:0\", \"parser_version\": \"rule-v1\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "20"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "LOW"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Retain symmetric design; prefer AES-256 for long-lived data"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": "PyCryptodome"
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"AES has no modeled Shor-algorithm exposure\", \"Mosca window 13y does not overlap 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "5abf03870c13bc6b"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "rule-v1"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 3, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 4, \"line_start\": 4}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609839"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:72",
+      "name": "AES",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "AES"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"ast\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": true, \"component\": \"positive-control\", \"confidence_by_source\": {\"ast\": 0.5}, \"confirmed_use\": false, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"declared_capability\", \"evidence_list\": [{\"algorithm\": \"AES\", \"asset_id\": \"cf99e299-714e-4c3b-9125-0d672b4d1fcd\", \"category\": \"encryption\", \"confidence\": 0.5, \"confidence_reasons\": [{\"base\": 0.5, \"bonus\": 0.0, \"evidence_kind\": \"declared_capability\", \"note\": \"import only; no confirmed operation\", \"penalty\": 0.0, \"source\": \"ast\"}], \"evidence\": {\"import\": \"Crypto.Cipher.AES\", \"node_type\": \"ImportFrom\"}, \"evidence_kind\": \"declared_capability\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"ast-v3\", \"source\": \"ast\", \"span\": {\"column_end\": 1, \"column_start\": 1, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 4, \"line_start\": 4}}], \"linked_evidence\": [], \"operation_anchor\": \"line:4:column:1\", \"parser_version\": \"ast-v3\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.65\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.65"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "20"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "LOW"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Retain symmetric design; prefer AES-256 for long-lived data"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "unknown"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"AES has no modeled Shor-algorithm exposure\", \"Mosca window 13y does not overlap 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "71c87e455fade2d4"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "declared_capability"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "ast-v3"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 1, \"column_start\": 1, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 4, \"line_start\": 4}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.5, \"bonus\": 0.0, \"evidence_kind\": \"declared_capability\", \"note\": \"import only; no confirmed operation\", \"penalty\": 0.0, \"source\": \"ast\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609840"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:73",
+      "name": "ECDSA",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "ECDSA"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "signature"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"rule\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"rule\": 0.82}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"ECDSA\", \"asset_id\": \"2299b99b-6b98-4af2-8833-80b75a690324\", \"category\": \"signature\", \"confidence\": 0.82, \"confidence_reasons\": [{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}], \"evidence\": {\"key_size\": null, \"library\": \"\", \"pattern\": \"SECP\", \"protocol\": \"\", \"rule_id\": \"crypto.ecdsa\", \"snippet\": \"[REDACTED]\", \"usage\": \"signature\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"rule-v1\", \"source\": \"rule\", \"span\": {\"column_end\": 4, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 13, \"line_start\": 13}}], \"linked_evidence\": [], \"operation_anchor\": \"line:13:column:0\", \"parser_version\": \"rule-v1\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "60"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "HIGH"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Evaluate ML-DSA; consider SLH-DSA where conservative hash-based signatures fit"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "signature"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"ECDSA (confirmed use of) is vulnerable to large-scale quantum attacks\", \"Mosca window 13y overlaps 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "af2191efd463fb3a"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "rule-v1"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 4, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 13, \"line_start\": 13}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609840"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:74",
+      "name": "ECDSA",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "ECDSA"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "signature"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"ast\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": true, \"component\": \"positive-control\", \"confidence_by_source\": {\"ast\": 0.5}, \"confirmed_use\": false, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"declared_capability\", \"evidence_list\": [{\"algorithm\": \"ECDSA\", \"asset_id\": \"6dd02d85-4283-4d86-bc61-6228191f044f\", \"category\": \"signature\", \"confidence\": 0.5, \"confidence_reasons\": [{\"base\": 0.5, \"bonus\": 0.0, \"evidence_kind\": \"declared_capability\", \"note\": \"import only; no confirmed operation\", \"penalty\": 0.0, \"source\": \"ast\"}], \"evidence\": {\"import\": \"cryptography.hazmat.primitives.asymmetric.ec\", \"node_type\": \"ImportFrom\"}, \"evidence_kind\": \"declared_capability\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"ast-v3\", \"source\": \"ast\", \"span\": {\"column_end\": 1, \"column_start\": 1, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 5, \"line_start\": 5}}], \"linked_evidence\": [], \"operation_anchor\": \"line:5:column:1\", \"parser_version\": \"ast-v3\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.65\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.65"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "53"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "HIGH"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Assess algorithm, protocol role, compatibility and standards profile"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "unknown"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"ECDSA (capability-only exposure to) is vulnerable to large-scale quantum attacks\", \"Mosca window 13y overlaps 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "7c41adc4d036630e"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "declared_capability"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "ast-v3"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 1, \"column_start\": 1, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 5, \"line_start\": 5}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.5, \"bonus\": 0.0, \"evidence_kind\": \"declared_capability\", \"note\": \"import only; no confirmed operation\", \"penalty\": 0.0, \"source\": \"ast\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609840"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:75",
+      "name": "ECDSA",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "ECDSA"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "signature"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"ast\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"ast\": 0.9}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"ECDSA\", \"asset_id\": \"60f7573a-35d5-4d6f-a318-d395d2bb323d\", \"category\": \"signature\", \"confidence\": 0.9, \"confidence_reasons\": [{\"base\": 0.9, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"direct call site confirmed in source\", \"penalty\": 0.0, \"source\": \"ast\"}], \"evidence\": {\"call\": \"cryptography.hazmat.primitives.asymmetric.ec.generate_private_key\", \"usage\": \"key_generation\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"ast-v3\", \"source\": \"ast\", \"span\": {\"column_end\": 43, \"column_start\": 4, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 13, \"line_start\": 13}}], \"linked_evidence\": [], \"operation_anchor\": \"line:13:column:4\", \"parser_version\": \"ast-v3\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "60"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "HIGH"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Assess algorithm, protocol role, compatibility and standards profile"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "unknown"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"ECDSA (confirmed use of) is vulnerable to large-scale quantum attacks\", \"Mosca window 13y overlaps 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "35673547b0a83e0d"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "ast-v3"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 43, \"column_start\": 4, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 13, \"line_start\": 13}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.9, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"direct call site confirmed in source\", \"penalty\": 0.0, \"source\": \"ast\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609841"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:76",
+      "name": "HMAC",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "HMAC"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "mac"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"ast\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"ast\": 0.9}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"HMAC\", \"asset_id\": \"45a90e7e-9b81-4802-a128-9a88dbab3dc2\", \"category\": \"mac\", \"confidence\": 0.9, \"confidence_reasons\": [{\"base\": 0.9, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"direct call site confirmed in source\", \"penalty\": 0.0, \"source\": \"ast\"}], \"evidence\": {\"call\": \"hmac.new\", \"digest_algorithm\": \"SHA-256\", \"usage\": \"unknown\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"ast-v3\", \"source\": \"ast\", \"span\": {\"column_end\": 42, \"column_start\": 4, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 10, \"line_start\": 10}}], \"linked_evidence\": [], \"operation_anchor\": \"line:10:column:4\", \"parser_version\": \"ast-v3\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "20"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "LOW"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Assess algorithm, protocol role, compatibility and standards profile"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "unknown"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"HMAC has no modeled Shor-algorithm exposure\", \"Mosca window 13y does not overlap 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "30e3e6bb70bda0a9"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "ast-v3"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 42, \"column_start\": 4, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 10, \"line_start\": 10}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.9, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"direct call site confirmed in source\", \"penalty\": 0.0, \"source\": \"ast\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609841"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:77",
+      "name": "RSA",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "RSA"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"rule\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"rule\": 0.82}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"RSA\", \"asset_id\": \"233defb9-9b9c-41ad-a0b7-86a2041ee93c\", \"category\": \"encryption\", \"confidence\": 0.82, \"confidence_reasons\": [{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}], \"evidence\": {\"key_size\": 2048, \"library\": \"\", \"pattern\": \"RSA\", \"protocol\": \"\", \"rule_id\": \"crypto.rsa\", \"snippet\": \"[REDACTED]\", \"usage\": \"encryption\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"rule-v1\", \"source\": \"rule\", \"span\": {\"column_end\": 3, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 12, \"line_start\": 12}}], \"linked_evidence\": [], \"operation_anchor\": \"line:12:column:0\", \"parser_version\": \"rule-v1\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "60"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "HIGH"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Evaluate ML-KEM for key establishment"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:key_size",
+          "value": "2048"
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"RSA (confirmed use of) is vulnerable to large-scale quantum attacks\", \"Mosca window 13y overlaps 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "78fb71a88312d9c6"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "rule-v1"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 3, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 12, \"line_start\": 12}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609841"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:78",
+      "name": "RSA",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "RSA"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"rule\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"rule\": 0.82}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"RSA\", \"asset_id\": \"12ca31d0-045b-477e-ba8d-9153c0b0261c\", \"category\": \"encryption\", \"confidence\": 0.82, \"confidence_reasons\": [{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}], \"evidence\": {\"key_size\": null, \"library\": \"Python cryptography\", \"pattern\": \"RSA\", \"protocol\": \"\", \"rule_id\": \"crypto.rsa\", \"snippet\": \"[REDACTED]\", \"usage\": \"encryption\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"rule-v1\", \"source\": \"rule\", \"span\": {\"column_end\": 3, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 5, \"line_start\": 5}}], \"linked_evidence\": [], \"operation_anchor\": \"line:5:column:0\", \"parser_version\": \"rule-v1\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "60"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "HIGH"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Evaluate ML-KEM for key establishment"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": "Python cryptography"
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"RSA (confirmed use of) is vulnerable to large-scale quantum attacks\", \"Mosca window 13y overlaps 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "bdd8c59de578938a"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "rule-v1"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 3, \"column_start\": 0, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 5, \"line_start\": 5}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.82, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"regex match against code pattern\", \"penalty\": 0.0, \"source\": \"rule\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609842"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:79",
+      "name": "RSA",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "RSA"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "encryption"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"ast\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": true, \"component\": \"positive-control\", \"confidence_by_source\": {\"ast\": 0.5}, \"confirmed_use\": false, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"declared_capability\", \"evidence_list\": [{\"algorithm\": \"RSA\", \"asset_id\": \"c65d30e8-5232-45ad-bdec-0193360d004e\", \"category\": \"encryption\", \"confidence\": 0.5, \"confidence_reasons\": [{\"base\": 0.5, \"bonus\": 0.0, \"evidence_kind\": \"declared_capability\", \"note\": \"import only; no confirmed operation\", \"penalty\": 0.0, \"source\": \"ast\"}], \"evidence\": {\"import\": \"cryptography.hazmat.primitives.asymmetric.rsa\", \"node_type\": \"ImportFrom\"}, \"evidence_kind\": \"declared_capability\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"ast-v3\", \"source\": \"ast\", \"span\": {\"column_end\": 1, \"column_start\": 1, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 5, \"line_start\": 5}}], \"linked_evidence\": [], \"operation_anchor\": \"line:5:column:1\", \"parser_version\": \"ast-v3\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.65\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.65"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "53"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "HIGH"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Assess algorithm, protocol role, compatibility and standards profile"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "unknown"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"RSA (capability-only exposure to) is vulnerable to large-scale quantum attacks\", \"Mosca window 13y overlaps 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "72b2621e6c4a8473"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "declared_capability"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "ast-v3"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 1, \"column_start\": 1, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 5, \"line_start\": 5}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.5, \"bonus\": 0.0, \"evidence_kind\": \"declared_capability\", \"note\": \"import only; no confirmed operation\", \"penalty\": 0.0, \"source\": \"ast\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609842"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "ecdat:asset:80",
+      "name": "SHA-256",
+      "properties": [
+        {
+          "name": "ecdat:asset:algorithm",
+          "value": "SHA-256"
+        },
+        {
+          "name": "ecdat:asset:category",
+          "value": "hash"
+        },
+        {
+          "name": "ecdat:asset:source",
+          "value": "[\"ast\"]"
+        },
+        {
+          "name": "ecdat:asset:location",
+          "value": "<working-copy>\\demo-repositories\\positive-control\\crypto_operations.py"
+        },
+        {
+          "name": "ecdat:asset:evidence_json",
+          "value": "{\"ambiguous\": false, \"ambiguous_count\": 0, \"capability_only\": false, \"component\": \"positive-control\", \"confidence_by_source\": {\"ast\": 0.9}, \"confirmed_use\": true, \"conflicting_operations\": [], \"context_conflicts\": {}, \"correlation_version\": \"operation-v2\", \"evidence_kind\": \"observed_operation\", \"evidence_list\": [{\"algorithm\": \"SHA-256\", \"asset_id\": \"376f15af-a2b2-4114-954a-9c81ca23b3c0\", \"category\": \"hash\", \"confidence\": 0.9, \"confidence_reasons\": [{\"base\": 0.9, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"direct call site confirmed in source\", \"penalty\": 0.0, \"source\": \"ast\"}], \"evidence\": {\"call\": \"hashlib.sha256\", \"usage\": \"hashing\"}, \"evidence_kind\": \"observed_operation\", \"location\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"parser_version\": \"ast-v3\", \"source\": \"ast\", \"span\": {\"column_end\": 27, \"column_start\": 4, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 9, \"line_start\": 9}}], \"linked_evidence\": [], \"operation_anchor\": \"line:9:column:4\", \"parser_version\": \"ast-v3\", \"reasons\": [\"1 evidence kind(s)\", \"avg=0.90\", \"+bonus=0.00\"], \"span_anchor\": \"\"}"
+        },
+        {
+          "name": "ecdat:asset:confidence",
+          "value": "0.9"
+        },
+        {
+          "name": "ecdat:asset:conflict",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:quantum_vulnerable",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:priority_score",
+          "value": "20"
+        },
+        {
+          "name": "ecdat:asset:priority_label",
+          "value": "LOW"
+        },
+        {
+          "name": "ecdat:asset:pqc_candidate",
+          "value": "Use SHA-256/SHA-3 with adequate output length; no public-key migration required"
+        },
+        {
+          "name": "ecdat:asset:business_criticality",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:usage",
+          "value": "hashing"
+        },
+        {
+          "name": "ecdat:asset:library",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:protocol",
+          "value": ""
+        },
+        {
+          "name": "ecdat:asset:data_sensitivity",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:data_lifetime_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:migration_time_years",
+          "value": "3"
+        },
+        {
+          "name": "ecdat:asset:threat_horizon_years",
+          "value": "10"
+        },
+        {
+          "name": "ecdat:asset:exposure",
+          "value": "internal"
+        },
+        {
+          "name": "ecdat:asset:migration_effort",
+          "value": "medium"
+        },
+        {
+          "name": "ecdat:asset:risk_reasons",
+          "value": "[\"SHA-256 has no modeled Shor-algorithm exposure\", \"Mosca window 13y does not overlap 10y threat horizon\", \"Data sensitivity is medium\", \"Business criticality is medium\", \"Exposure is internal\", \"Migration effort is medium\"]"
+        },
+        {
+          "name": "ecdat:asset:hybrid_recommended",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:logical_asset_id",
+          "value": "620ed202dc31c2a4"
+        },
+        {
+          "name": "ecdat:asset:evidence_kind",
+          "value": "observed_operation"
+        },
+        {
+          "name": "ecdat:asset:parser_version",
+          "value": "ast-v3"
+        },
+        {
+          "name": "ecdat:asset:evidence_quality",
+          "value": "high"
+        },
+        {
+          "name": "ecdat:asset:confirmed_use",
+          "value": "true"
+        },
+        {
+          "name": "ecdat:asset:capability_only",
+          "value": "false"
+        },
+        {
+          "name": "ecdat:asset:span",
+          "value": "{\"column_end\": 27, \"column_start\": 4, \"file\": \"C:\\\\Users\\\\Tishan Kumar B\\\\Desktop\\\\ECDAT-SIH-Working\\\\demo-repositories\\\\positive-control\\\\crypto_operations.py\", \"line_end\": 9, \"line_start\": 9}"
+        },
+        {
+          "name": "ecdat:asset:confidence_reasons",
+          "value": "[{\"base\": 0.9, \"bonus\": 0.0, \"evidence_kind\": \"observed_operation\", \"note\": \"direct call site confirmed in source\", \"penalty\": 0.0, \"source\": \"ast\"}]"
+        },
+        {
+          "name": "ecdat:asset:created_at",
+          "value": "2026-10-08T10:25:48.609842"
+        },
+        {
+          "name": "ecdat:asset:risk_context_provenance",
+          "value": "{\"business_criticality\": \"policy-default\", \"data_lifetime_years\": \"policy-default\", \"data_sensitivity\": \"policy-default\", \"exposure\": \"policy-default\", \"migration_effort\": \"policy-default\", \"migration_time_years\": \"policy-default\", \"threat_horizon_years\": \"policy-default\"}"
+        }
+      ]
+    }
+  ]
+}

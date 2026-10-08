@@ -1,0 +1,66 @@
+{
+  "$schema": "https://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:84894854-105b-4d04-ae8c-4ed972b17dcb",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-08T10:26:00.187959+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "ECDAT",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "ecdat:scan:id",
+        "value": "3"
+      },
+      {
+        "name": "ecdat:repository:path",
+        "value": "<working-copy>\\demo-repositories\\negative-control"
+      },
+      {
+        "name": "ecdat:scan:result-version",
+        "value": "1"
+      },
+      {
+        "name": "ecdat:scan:coverage-percent",
+        "value": "100.0"
+      },
+      {
+        "name": "ecdat:scan:in-scope-files",
+        "value": "1"
+      },
+      {
+        "name": "ecdat:scan:scanned-files",
+        "value": "1"
+      },
+      {
+        "name": "ecdat:scan:failed-files",
+        "value": "0"
+      },
+      {
+        "name": "ecdat:scan:blind-spots",
+        "value": "[\"Runtime-generated cryptography is outside static scan scope\", \"Compiled binaries and obfuscated bytecode require binary analysis\", \"Container images, cloud services, network traffic and HSMs are not inspected\", \"Source profile excludes .git, node_modules, dist, build, __pycache__, .venv, venv and env directories\", \"Coverage measures files processed without reported collector errors, not detection completeness\", \"Linked directories/files are excluded; oversized files count as processing failures\", \"Memory budget of 512 MB enforced; remaining files skipped on budget exhaustion\"]"
+      },
+      {
+        "name": "ecdat:export:findings",
+        "value": "0"
+      },
+      {
+        "name": "ecdat:export:mapping",
+        "value": "ECDAT inventory properties; not native cryptographic-asset semantics"
+      },
+      {
+        "name": "ecdat:export:consistency",
+        "value": "single database statement snapshot including risk context"
+      }
+    ]
+  },
+  "components": []
+}

@@ -1,6 +1,6 @@
 # Standalone CBOM download
 
-Use `GET /api/exports/cbom?scan_id=42` with the normal authenticated API session. Omitting scan_id selects the latest completed scan. Existing `/api/cbom` pagination and `/api/cbom.csv` behavior remain unchanged. Frontend integration belongs to the frontend team; this backend task did not change download buttons.
+Use `GET /api/exports/cbom?scan_id=42` with the normal authenticated API session. Omitting scan_id selects the latest completed scan. Existing `/api/cbom` pagination and `/api/cbom.csv` behavior remain unchanged. The user subsequently authorized the CBOM download integration: the `Full JSON` button now downloads this endpoint using the displayed scan's metadata id, including completed empty scans. CSV uses its existing endpoint. Download failures show a retryable alert. See [integration verification](integration-verification-2026-10-08.md).
 
 Successful response: `application/vnd.cyclonedx+json`, attachment filename `ecdat-cbom.json`, `X-Exported-Count`, SHA-256 document ETag and `Cache-Control: no-store`. Each export has its own UUID serial and version 1. It is a fresh document, not a persisted risk-edit revision. `ecdat:scan:result-version` identifies scanner results only.
 

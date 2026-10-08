@@ -18,10 +18,12 @@ function applyTheme(theme: Theme): string {
 
 function getInitialTheme(): { stored: Theme; resolved: string } {
   try {
-    const stored = (localStorage.getItem(STORAGE_KEY) as Theme) || "system";
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const stored: Theme =
+      saved === "light" || saved === "dark" || saved === "system" ? saved : "dark";
     return { stored, resolved: applyTheme(stored) };
   } catch {
-    return { stored: "system" as Theme, resolved: applyTheme("system") };
+    return { stored: "dark" as Theme, resolved: applyTheme("dark") };
   }
 }
 

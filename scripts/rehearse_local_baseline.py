@@ -59,7 +59,13 @@ def wait_ready(server, base):
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("--browser", action="store_true", help="Verify real frontend/API integration")
+parser.add_argument("--demo-pack", type=Path, help="Verify three controls and save portable exports")
+parser.add_argument("--screenshots", type=Path, help="Save browser screenshots; requires --browser")
 args = parser.parse_args()
+if args.demo_pack and args.browser:
+    parser.error("Run --demo-pack and --browser --screenshots separately to isolate scan admission windows")
+if args.screenshots and not args.browser:
+    parser.error("--screenshots requires --browser")
 (root / "tmp").mkdir(exist_ok=True)
 with disposable_folder(root / "tmp") as folder:
     env = os.environ.copy()
@@ -70,7 +76,7 @@ with disposable_folder(root / "tmp") as folder:
             "role": "admin", "password": secrets.token_urlsafe(24)}}),
         "ECDAT_ENV": "local",
         "ECDAT_AUTO_CREATE_TABLES": "false",
-        "ECDAT_ALLOWED_SCAN_ROOTS": str(root / "test-repo"),
+        "ECDAT_ALLOWED_SCAN_ROOTS": os.pathsep.join([str(root / "test-repo"), str(root / "demo-repositories")]),
         "ECDAT_ALLOW_UNRESTRICTED_SCAN_ROOTS": "false",
         "ECDAT_ALLOW_ROLE_HEADER": "false",
         "ECDAT_RATE_LIMIT": "10000",
@@ -89,12 +95,20 @@ with disposable_folder(root / "tmp") as folder:
         try:
             wait_ready(server, base)
             print("PASS migrated database and readiness")
-            subprocess.run([
-                sys.executable, "scripts/verify_rnsit_workflow.py", str(root / "test-repo"),
-                "--base-url", base, "--timeout", "90", "--verify-risk-edit"],
-                cwd=root, env=env, check=True, timeout=100)
+            if not args.demo_pack:
+                subprocess.run([
+                    sys.executable, "scripts/verify_rnsit_workflow.py", str(root / "test-repo"),
+                    "--base-url", base, "--timeout", "90", "--verify-risk-edit"],
+                    cwd=root, env=env, check=True, timeout=100)
+            if args.demo_pack:
+                subprocess.run([sys.executable, "scripts/verify_demo_controls.py",
+                                "--base-url", base, "--output", str(args.demo_pack.resolve())],
+                               cwd=root, env=env, check=True, timeout=400)
             if args.browser:
                 browser_env = dict(env, ECDAT_REHEARSAL_API=base, ECDAT_REHEARSAL_FOLDER=folder)
+                if args.screenshots:
+                    args.screenshots.mkdir(parents=True, exist_ok=True)
+                    browser_env["ECDAT_DEMO_OUTPUT"] = str(args.screenshots.resolve())
                 subprocess.run(["node", "scripts/verify_live_browser.mjs"], cwd=root,
                                env=browser_env, check=True, timeout=150)
                 result = json.loads((Path(folder) / "browser-result.json").read_text())
