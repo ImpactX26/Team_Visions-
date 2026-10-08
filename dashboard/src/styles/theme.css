@@ -1,0 +1,34 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ECDAT Theme — Theme toggle mechanism and base theme setup
+
+   This file provides:
+   1. A data-theme attribute on <html> that controls light/dark mode
+   2. A smooth transition for theme switching
+   3. The mechanism is driven by a React click handler on the theme toggle
+
+   DO NOT use window.matchMedia or prefers-color-scheme here.
+   Theme is controlled solely via the data-theme attribute.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Theme transition ──────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+/* Reduced motion: disable theme transition and all motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

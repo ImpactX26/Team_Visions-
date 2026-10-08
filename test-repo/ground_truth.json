@@ -1,0 +1,34 @@
+{
+  "description": "Known detectable cryptographic assets used to evaluate ECDAT precision and recall.",
+  "assets": [
+    {"component": "app-py", "algorithm": "AES"},
+    {"component": "app-py", "algorithm": "RSA"},
+    {"component": "app-py", "algorithm": "ECDSA"},
+    {"component": "app-py", "algorithm": "SHA-256"},
+    {"component": "app-py", "algorithm": "SHA-512"},
+    {"component": "app-py", "algorithm": "RNG"},
+    {"component": "app-py", "algorithm": "HMAC"},
+    {"component": "app-py", "algorithm": "PBKDF2"},
+    {"component": "app-java", "algorithm": "AES"},
+    {"component": "app-java", "algorithm": "RSA"},
+    {"component": "app-java", "algorithm": "ECDSA"},
+    {"component": "app-java", "algorithm": "SHA-256"},
+    {"component": "certs", "algorithm": "RSA"},
+    {"component": "certs", "algorithm": "ECDSA"},
+    {"component": "dependency-only", "algorithm": "TLS"},
+    {"component": "conflict", "algorithm": "RSA"},
+    {"component": "conflict", "algorithm": "AES"}
+  ],
+  "alias_pairs": [
+    {"algorithms": ["RSA", "RSA-2048"], "same_family": true},
+    {"algorithms": ["AES", "AES-256-GCM"], "same_family": true},
+    {"algorithms": ["ECDSA", "ECDSA-P256"], "same_family": true}
+  ],
+  "cert_expectations": [
+    {"component": "certs/server.crt", "key_size": 2048, "not_before": "2024-01-01", "not_after": "2026-01-01"},
+    {"component": "certs/client.crt", "key_size": 2048, "not_before": "2024-06-01", "not_after": "2026-06-01"}
+  ],
+  "blind_spots": [
+    {"component": "blind-spot", "algorithm": "AES", "reason": "runtime-computed module and function"}
+  ]
+}

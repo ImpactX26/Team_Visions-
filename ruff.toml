@@ -1,0 +1,4 @@
+extend-exclude = ["scanner/corpora"]
+
+[lint]
+ignore = ["BLE001", "PLC0414", "RUF012", "S110", "SIM102", "SIM113", "SIM117", "TRY004"]

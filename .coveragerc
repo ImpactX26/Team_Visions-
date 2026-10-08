@@ -1,0 +1,17 @@
+[run]
+source = backend
+omit =
+    tests/*
+    backend/tests/*
+    */__pycache__/*
+    .venv/*
+branch = True
+
+[report]
+fail_under = 70
+precision = 1
+show_missing = True
+skip_covered = True
+
+[html]
+directory = htmlcov

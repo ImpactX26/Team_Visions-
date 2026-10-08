@@ -1,0 +1,26 @@
+FROM python:3.11-slim-bookworm@sha256:528257d48c1da0dcecc2e725d1ae34498d60c965f1241e39cd6a85a8859bdf84
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+COPY backend/requirements.lock ./backend/requirements.lock
+RUN pip install --no-cache-dir --require-hashes -r backend/requirements.lock
+
+RUN groupadd --gid 10001 ecdat \
+    && useradd --uid 10001 --gid ecdat --no-create-home --shell /usr/sbin/nologin ecdat
+
+COPY --chown=10001:10001 backend/ /app/backend/
+COPY --chown=10001:10001 scanner/ /app/scanner/
+COPY --chown=10001:10001 schemas/cyclonedx/1.6/ /app/schemas/cyclonedx/1.6/
+COPY --chown=10001:10001 alembic.ini /app/alembic.ini
+COPY --chown=10001:10001 alembic/ /app/alembic/
+
+USER 10001:10001
+
+EXPOSE 8000
+
+ENV SCANNER_PATH=/app
+
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
