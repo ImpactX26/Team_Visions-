@@ -13,7 +13,6 @@ import { MotionConfig } from "framer-motion";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ToastProvider, useToast } from "./components/Toast";
 import { ConfirmDialog } from "./components/ConfirmDialog";
-import ThemeToggle from "./components/ThemeToggle";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +24,7 @@ const RiskReportPage = lazy(() => import("./pages/RiskReport"));
 const CbomPage = lazy(() => import("./pages/CbomPage"));
 const ScanDetailPage = lazy(() => import("./pages/ScanDetailPage"));
 const ScanHistoryPage = lazy(() => import("./pages/ScanHistoryPage"));
+const ScanCompare = lazy(() => import("./pages/ScanCompare"));
 const EvidenceGraphPage = lazy(() => import("./pages/EvidenceGraphPage"));
 
 function AppInner() {
@@ -229,7 +229,6 @@ function AppInner() {
             )}
           </svg>
         </button>
-        <ThemeToggle />
         <div className="topbar-account">
           <button
             className="button topbar-menu-btn"
@@ -344,6 +343,7 @@ function AppInner() {
               <Route path="/reports" element={<RiskReportPage />} />
               <Route path="/cbom" element={<CbomPage />} />
               <Route path="/scans" element={<ScanHistoryPage />} />
+              <Route path="/compare" element={<ScanCompare />} />
               <Route path="/scans/:id" element={<ScanDetailPage />} />
               <Route path="/evidence-graph" element={<EvidenceGraphPage />} />
               <Route path="*" element={<NotFound />} />

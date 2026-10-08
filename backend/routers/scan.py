@@ -183,6 +183,17 @@ def list_scans(
         db.close()
 
 
+@router.get("/scans/compare")
+def scan_comparison(
+    baseline_id: int = Query(ge=1), current_id: int = Query(ge=1),
+    limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0),
+    status: str | None = Query(default=None, pattern="^(added|changed|unchanged|no_longer_observed|ambiguous|unknown)$"),
+) -> dict:
+    from backend.services.scan_comparison import compare_scans
+    with SessionLocal() as db:
+        return compare_scans(db, baseline_id, current_id, limit, offset, status)
+
+
 @router.get("/scans/{scan_id}", response_model=ScanJobResponse)
 def get_scan(scan_id: int) -> ScanJobResponse:
     """Get a single scan job detail."""

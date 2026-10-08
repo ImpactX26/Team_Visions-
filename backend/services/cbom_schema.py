@@ -51,6 +51,16 @@ def validate_cbom(data: dict) -> list[str]:
     collect(data)
     if len(refs) != len(set(refs)):
         errors.append("Duplicate bom-ref identifiers")
+    def check_crypto_refs(value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key in {"algorithmRef", "subjectPublicKeyRef", "signatureAlgorithmRef"} and child not in refs or key == "cryptoRefArray" and isinstance(child, list) and any(ref not in refs for ref in child):
+                    errors.append("Dangling cryptographic reference")
+                check_crypto_refs(child)
+        elif isinstance(value, list):
+            for child in value:
+                check_crypto_refs(child)
+    check_crypto_refs(data)
     dependencies = data.get("dependencies", [])
     if not isinstance(dependencies, list):
         return errors

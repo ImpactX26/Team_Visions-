@@ -2606,3 +2606,45 @@ td small {
   border-color: var(--color-forest-bright);
   color: var(--color-bg);
 }
+
+.analyst-review {
+  margin-block: 1.5rem;
+  overflow-wrap: anywhere;
+}
+.analyst-review form {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 42rem;
+}
+.analyst-review textarea {
+  min-height: 6rem;
+  width: 100%;
+  resize: vertical;
+}
+
+.compare-controls,
+.compare-counts,
+.compare-sides {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.compare-controls label {
+  display: grid;
+  gap: 0.5rem;
+}
+.compare-controls .muted {
+  grid-column: 1 / -1;
+}
+.compare-counts dd {
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+}
+.compare-entry {
+  margin-block: 1rem;
+  overflow-wrap: anywhere;
+}
+.compare-sides > section {
+  min-width: 0;
+}

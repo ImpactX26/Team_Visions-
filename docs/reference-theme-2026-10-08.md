@@ -1,0 +1,9 @@
+# ECDAT reference theme
+
+Applied the supplied dark reference to the shared frontend styling on 8 October 2026. The application uses near-black #020202, opaque midnight navy #02030C, highlighted forest #08120A, charcoal #333536, white and secondary grey #A3A3A3. Electric green #36FF5E is reserved for primary scan/sign-in actions, keyboard focus and active navigation. Primary green controls use black text. The surrounding mockup's light grey is not used as the application background.
+
+Removed the glass blur, ambient gradients, glowing severity indicators and light-mode control. Retained the existing navigation, authentication, API behavior, review workflows and measured metrics. Shared tokens style inventory, scan history/comparison, findings/evidence, reports, CBOM and sign-in. Buttons, badges, tables and panels have crisp geometry; selected findings remain subtle. Critical, warning and unknown labels use separate red, amber and violet semantics. Monospace covers compact labels, code and identifiers; explanations and dense table content use sans-serif.
+
+Verification: 118 frontend tests passed, including contrast checks. All 59 Chromium checks passed across 375–1440px layouts. Following final mobile pagination and filter polish, six affected browser checks passed. TypeScript/Vite production build, ESLint, Prettier and changed-file whitespace checks passed. Production asset budgets were retained. Screenshots under `tmp/reference-theme/` were visually inspected; they use mocked API fixtures for repeatable verification and are not production performance or accuracy evidence.
+
+The 85/10/5 proportions are a design target, not a measured pixel ratio. No marketing accuracy, customer counts or vendor endorsements were added. No packages were installed and no backend code or persistent data changed in this design pass.

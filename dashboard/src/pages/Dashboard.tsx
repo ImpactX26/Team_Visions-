@@ -574,11 +574,14 @@ export default function Dashboard() {
     setEvaluation(undefined);
     setError("");
     setDownloadError("");
-    Promise.all([getDashboardSummary(scanId), getEvaluation(scanId).catch(() => undefined)])
-      .then(([s, e]) => {
+    getDashboardSummary(scanId)
+      .then(async (s) => {
         if (cancelled) return;
         setSummary(s);
-        setEvaluation(e);
+        if (s.latest_scan_id != null) {
+          const evaluation = await getEvaluation(s.latest_scan_id).catch(() => undefined);
+          if (!cancelled) setEvaluation(evaluation);
+        }
       })
       .catch((e) => {
         if (!cancelled) {

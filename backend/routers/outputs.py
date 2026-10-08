@@ -17,6 +17,7 @@ from backend.logging_config import get_logger
 from backend.models.asset import CryptoAssetDB
 from backend.models.scan_job import ScanJobDB
 from backend.services.calibration import classify_confidence, load_calibration_params
+from backend.services.cbom_mapping import crypto_component
 from backend.services.evaluation import evaluate_assets
 
 logger = get_logger("ecdat.outputs")
@@ -164,12 +165,7 @@ def cbom(
                 ],
             },
             "pagination": {"total": total, "filtered": filtered_total, "offset": offset, "limit": limit, "loaded": len(assets)},
-            "components": [{
-                "type": "library",
-                "bom-ref": f"ecdat:asset:{asset.id}",
-                "name": asset.algorithm,
-                "properties": properties(asset),
-            } for asset in assets],
+            "components": [crypto_component(asset, properties(asset)) for asset in assets],
         }
     finally: db.close()
 
@@ -210,7 +206,7 @@ def cbom_csv(scan_id: ScanId = None) -> StreamingResponse:
             )
             for asset in assets:
                 yield _csv_row(
-                    [asset.algorithm, "library", asset.location, asset.category, asset.confidence]
+                    [asset.algorithm, crypto_component(asset, [])["type"], asset.location, asset.category, asset.confidence]
                 )
         finally:
             export_db.close()

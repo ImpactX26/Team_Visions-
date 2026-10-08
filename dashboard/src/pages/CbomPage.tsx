@@ -267,6 +267,11 @@ export default function CbomPage() {
       </section>
 
       {exportError && <p role="alert">{exportError}</p>}
+      <p className="page-description">
+        Native crypto properties cover an evidence-backed subset. Missing parameters and
+        relationships remain unknown; unmapped findings are retained as data records. Static call
+        sites do not prove runtime execution.
+      </p>
 
       {/* Summary chips */}
       {!loading && (
@@ -378,10 +383,10 @@ export default function CbomPage() {
                 variants={staggerItem}
                 className={`cbom-meta-card ${schemaValidation.valid ? "cbom-schema-valid" : "cbom-schema-invalid"}`}
               >
-                <span className="cbom-meta-label">Schema validation</span>
+                <span className="cbom-meta-label">Page structure</span>
                 <span className="cbom-meta-value">
                   {schemaValidation.valid ? (
-                    <>Valid CycloneDX</>
+                    <>Required fields present</>
                   ) : (
                     <span className="cbom-schema-errors">
                       {schemaValidation.errors.length} issue
@@ -430,10 +435,7 @@ export default function CbomPage() {
                       JsonRecord | undefined;
                     const legacyEvidence = (comp.evidence as Array<JsonRecord>) || [];
                     const standardEvidence: JsonRecord = {
-                      algorithm:
-                        algorithmProperties?.primitive ||
-                        algorithmProperties?.algorithmFamily ||
-                        comp.name,
+                      algorithm: comp.name,
                       category: componentProperties["ecdat:category"],
                       location: componentProperties["ecdat:location"],
                       usage: componentProperties["ecdat:usage"],
@@ -492,6 +494,20 @@ export default function CbomPage() {
                                     )}
                                   </div>
                                   <div className="cbom-evidence-detail">
+                                    {Boolean(algorithmProperties?.primitive) && (
+                                      <span>
+                                        Primitive: {String(algorithmProperties?.primitive)}
+                                      </span>
+                                    )}
+                                    {Boolean(algorithmProperties?.mode) && (
+                                      <span>Mode: {String(algorithmProperties?.mode)}</span>
+                                    )}
+                                    {Boolean(algorithmProperties?.parameterSetIdentifier) && (
+                                      <span>
+                                        Parameter set:{" "}
+                                        {String(algorithmProperties?.parameterSetIdentifier)}
+                                      </span>
+                                    )}
                                     {loc && <span title={loc}>Location: {displayPath(loc)}</span>}
                                     {usg && <span>Usage: {usg}</span>}
                                     {lib && <span>Library: {lib}</span>}

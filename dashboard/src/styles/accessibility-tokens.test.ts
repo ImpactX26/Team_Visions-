@@ -12,9 +12,10 @@ const workspaceCss = readFileSync(resolve(process.cwd(), "src/styles/workspace.c
 function declarationBlock(theme: "light" | "dark", css = tokensCss) {
   const pattern =
     theme === "light" ? /:root\s*\{([\s\S]*?)\}/ : /\[data-theme="dark"\]\s*\{([\s\S]*?)\}/;
-  const match = css.match(pattern);
+  const base = css.match(/:root\s*\{([\s\S]*?)\}/);
+  const match = css.match(pattern) ?? base;
   if (!match) throw new Error(`Missing ${theme} token block`);
-  return match[1];
+  return `${base?.[1] ?? ""}\n${match[1]}`;
 }
 
 function token(theme: "light" | "dark", name: string, css = tokensCss) {

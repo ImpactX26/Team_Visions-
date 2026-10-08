@@ -1,4 +1,4 @@
-"""Bounded inventory-property export from one database statement snapshot."""
+"""Bounded evidence-backed native CBOM from one database statement snapshot."""
 import hashlib
 import json
 from datetime import datetime, timezone
@@ -10,6 +10,7 @@ from sqlalchemy import select
 from backend.models.asset import CryptoAssetDB
 from backend.models.scan_job import ScanJobDB
 from backend.schemas.asset import AssetResponse
+from backend.services.cbom_mapping import MAPPING_VERSION, crypto_component
 from backend.services.cbom_schema import validate_cbom
 from scanner.redaction import redact_evidence
 
@@ -53,12 +54,8 @@ def export_cbom(db, scan_id: int | None) -> tuple[bytes, int, str]:
         values = AssetResponse.model_validate(asset).model_dump(mode="json")
         values.pop("id")
         values.pop("scan_job_id")
-        # Preserve the structured finding as properties, with raw source/secret
-        # content conservatively redacted. This is not native cryptoProperties.
-        components.append({"type": "library", "bom-ref": f"ecdat:asset:{asset.id}",
-                           "name": asset.algorithm,
-                           "properties": _properties({f"ecdat:asset:{key}": value
-                                                       for key, value in values.items()})})
+        components.append(crypto_component(asset, _properties({f"ecdat:asset:{key}": value
+                                                              for key, value in values.items()})))
     document = redact_evidence({
         "$schema": "https://cyclonedx.org/schema/bom-1.6.schema.json",
         "bomFormat": "CycloneDX", "specVersion": "1.6",
@@ -75,7 +72,7 @@ def export_cbom(db, scan_id: int | None) -> tuple[bytes, int, str]:
                 "ecdat:scan:failed-files": scan.failed_files,
                 "ecdat:scan:blind-spots": scan.blind_spots or [],
                 "ecdat:export:findings": len(assets),
-                "ecdat:export:mapping": "ECDAT inventory properties; not native cryptographic-asset semantics",
+                "ecdat:export:mapping": MAPPING_VERSION + "; partial evidence-backed native semantics; unmapped findings retained as data",
                 "ecdat:export:consistency": "single database statement snapshot including risk context",
             }),
         }, "components": components,

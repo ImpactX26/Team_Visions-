@@ -8,6 +8,8 @@ const getEvidenceGraph = vi.fn();
 
 vi.mock("../api/client", () => ({
   getAsset: (...args: unknown[]) => getAsset(...args),
+  getAssetReviews: () => Promise.resolve([]),
+  reviewAsset: vi.fn(),
   updateAsset: vi.fn(),
   canWrite: () => true,
   getEvidenceGraph: (...args: unknown[]) => getEvidenceGraph(...args),
@@ -122,6 +124,49 @@ describe("AssetDetail", () => {
     expect(await screen.findByText("detected by")).toBeVisible();
     await waitFor(() => expect(getEvidenceGraph).toHaveBeenCalledWith(35, 4758));
   });
+
+  it.each([
+    ["missing legacy provenance", undefined, 0, 0, 7],
+    ["empty legacy provenance", {}, 0, 0, 7],
+    [
+      "mixed provenance",
+      {
+        business_criticality: "user-provided",
+        data_sensitivity: "policy-default",
+        exposure: "unknown",
+        migration_effort: "unrecognized",
+        data_lifetime_years: "user-provided",
+        migration_time_years: "policy-default",
+      },
+      2,
+      2,
+      3,
+    ],
+  ])(
+    "labels %s without inventing policy defaults",
+    async (_, provenance, user, policy, unknown) => {
+      const asset = await getAsset();
+      getAsset.mockResolvedValueOnce({ ...asset, risk_context_provenance: provenance });
+      render(
+        <MemoryRouter initialEntries={["/assets/4758"]}>
+          <Routes>
+            <Route path="/assets/:id" element={<AssetDetail />} />
+          </Routes>
+        </MemoryRouter>,
+      );
+
+      await screen.findByRole("group", { name: "Business and migration risk inputs" });
+      expect(
+        screen.queryAllByText("User-provided", { selector: ".field-provenance" }),
+      ).toHaveLength(user);
+      expect(
+        screen.queryAllByText("Policy default", { selector: ".field-provenance" }),
+      ).toHaveLength(policy);
+      expect(
+        screen.queryAllByText("Unknown provenance", { selector: ".field-provenance" }),
+      ).toHaveLength(unknown);
+    },
+  );
 
   it("shows a muted message when graph data is empty", async () => {
     getEvidenceGraph.mockResolvedValueOnce({

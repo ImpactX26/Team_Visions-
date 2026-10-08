@@ -67,7 +67,12 @@ def read_bytes(path: str) -> bytes:
         info = os.fstat(stream.fileno())
         if not stat.S_ISREG(info.st_mode) or info.st_size > limit:
             raise OSError('Unsupported or oversized scan file')
-        data = stream.read(limit + 1)
+        # Reading the maximum configured size allocates that buffer even for a
+        # tiny file on some Python/platform combinations. Bound the allocation
+        # by the verified file size, with one extra byte to detect growth.
+        data = stream.read(info.st_size + 1)
+        if len(data) > info.st_size:
+            raise OSError('Scan file grew during bounded read')
     if len(data) > limit:
         raise OSError('Scan file grew beyond configured limit')
     return data

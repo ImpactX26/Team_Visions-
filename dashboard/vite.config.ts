@@ -6,8 +6,10 @@ const FRONTEND_BUDGETS = {
   maxBundleGzipKb: 500,
   // RNSIT baseline after the evidence, history, and responsive assurance views.
   // Keep narrow headroom so a material regression still fails the build.
-  maxTotalJsKb: 810,
-  maxCssKb: 155,
+  // Review and lazy scan comparison: 817.7KB; retain narrow feature headroom.
+  maxTotalJsKb: 820,
+  // Review form layout adds <0.3KB above the prior 155KB stylesheet.
+  maxCssKb: 156,
 };
 
 export default defineConfig(({ mode }) => ({

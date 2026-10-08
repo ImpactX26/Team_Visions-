@@ -1,6 +1,7 @@
 """Assets router — list and retrieve crypto assets."""
 import csv
 import io
+from datetime import datetime, timezone
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -9,13 +10,62 @@ from sqlalchemy import or_
 
 from backend.db import SessionLocal
 from backend.logging_config import get_logger
-from backend.models.asset import CryptoAssetDB
+from backend.models.asset import AssetReviewDB, CryptoAssetDB
 from backend.models.scan_job import ScanJobDB
-from backend.schemas.asset import AssetResponse, AssetUpdate
+from backend.schemas.asset import (
+    AssetResponse,
+    AssetReviewRequest,
+    AssetReviewResponse,
+    AssetUpdate,
+)
 from backend.security import current_role, ensure_write_role, record_audit
 
 logger = get_logger("ecdat.assets")
 router = APIRouter(prefix="/api", tags=["assets"])
+
+
+@router.get("/assets/{asset_id}/reviews", response_model=list[AssetReviewResponse])
+def list_asset_reviews(asset_id: int, limit: int = Query(default=50, ge=1, le=200),
+                       offset: int = Query(default=0, ge=0)):
+    with SessionLocal() as db:
+        if db.get(CryptoAssetDB, asset_id) is None:
+            raise HTTPException(404, "Asset not found")
+        return [AssetReviewResponse.model_validate(review) for review in
+                db.query(AssetReviewDB).filter_by(asset_id=asset_id)
+                .order_by(AssetReviewDB.version.desc()).offset(offset).limit(limit).all()]
+
+
+@router.post("/assets/{asset_id}/reviews", response_model=AssetResponse)
+def review_asset(asset_id: int, payload: AssetReviewRequest, role: str = Depends(current_role)):
+    ensure_write_role(role)
+    with SessionLocal() as db:
+        try:
+            asset = db.get(CryptoAssetDB, asset_id)
+            if asset is None:
+                raise HTTPException(404, "Asset not found")
+            now = datetime.now(timezone.utc)
+            reviewer = getattr(role, "subject", f"legacy-role:{role}")
+            version = payload.expected_version + 1
+            changed = db.query(CryptoAssetDB).filter(
+                CryptoAssetDB.id == asset_id,
+                CryptoAssetDB.review_version == payload.expected_version,
+            ).update({
+                "review_status": payload.status, "review_version": version,
+                "reviewed_by": reviewer, "reviewed_at": now, "review_reason": payload.reason,
+            }, synchronize_session=False)
+            if changed != 1:
+                raise HTTPException(409, "Review changed; reload the finding before saving")
+            db.add(AssetReviewDB(asset_id=asset_id, version=version, status=payload.status,
+                                reason=payload.reason, reviewer=reviewer, reviewed_at=now))
+            record_audit("asset.reviewed", f"asset:{asset_id}", role,
+                         {"status": payload.status, "reason": payload.reason, "version": version},
+                         session=db)
+            db.commit()
+            db.refresh(asset)
+            return AssetResponse.model_validate(asset)
+        except Exception:
+            db.rollback()
+            raise
 
 CSV_COLUMNS = (
     "id", "algorithm", "key_size", "category", "priority_label",

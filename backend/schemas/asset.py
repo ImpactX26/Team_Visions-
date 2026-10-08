@@ -1,7 +1,7 @@
 """Pydantic schemas for API serialization."""
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import PurePosixPath
 from typing import Any, Literal
 
@@ -105,6 +105,16 @@ class AssetResponse(BaseModel):
     confidence_reasons: list[dict[str, Any]] = Field(default_factory=list)
     created_at: datetime
     risk_context_provenance: dict[str, str] = Field(default_factory=dict)
+    review_status: Literal["unreviewed", "confirmed_use", "false_positive", "uncertain"] = "unreviewed"
+    review_version: int = 0
+    reviewed_by: str | None = None
+    reviewed_at: datetime | None = None
+    review_reason: str | None = None
+
+    @field_validator("reviewed_at")
+    @classmethod
+    def review_timestamp_utc(cls, value: datetime | None) -> datetime | None:
+        return value.replace(tzinfo=timezone.utc) if value and value.tzinfo is None else value
 
     @field_validator("evidence_json")
     @classmethod
@@ -122,11 +132,36 @@ class AssetUpdate(BaseModel):
     migration_effort: Literal["low", "medium", "high", "critical"] | None = None
 
 
+class AssetReviewRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+    status: Literal["confirmed_use", "false_positive", "uncertain"]
+    reason: str = Field(min_length=1, max_length=2000)
+    expected_version: int = Field(ge=0)
+
+
+class AssetReviewResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    asset_id: int
+    version: int
+    status: str
+    reason: str
+    reviewer: str
+    reviewed_at: datetime
+
+    @field_validator("reviewed_at")
+    @classmethod
+    def review_timestamp_utc(cls, value: datetime) -> datetime:
+        return value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value
+
+
 class ScanJobResponse(BaseModel):
     """Scan job summary."""
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    comparison_ready: bool = False
+    snapshot_id: str = ""
     repo_path: str
     status: str
     started_at: datetime | None = None

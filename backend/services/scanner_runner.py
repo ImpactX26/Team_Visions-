@@ -28,6 +28,12 @@ from backend.services.confidence import score_finding
 from backend.services.correlator import correlate, correlate_v3
 from backend.services.risk_engine import assess_risk
 from backend.services.risk_policy import apply_risk_defaults
+from backend.services.scan_identity import (
+    attach_anchors,
+    comparison_metadata,
+    git_identity,
+    scanner_version,
+)
 from scanner.redaction import redact_evidence
 
 
@@ -84,6 +90,8 @@ def collect_scan_result(
     progress_callback=None,
 ) -> dict[str, Any]:
     """Run repository-controlled parsing without touching the control-plane DB."""
+    version = scanner_version()
+    git_before = git_identity(repo_path)
     evidence, metrics = scan_with_metrics(repo_path, progress_callback=progress_callback)
     if progress_callback is not None:
         progress_callback({**metrics["collector_stats"], "_phase": "correlating",
@@ -92,6 +100,11 @@ def collect_scan_result(
                            "_files_processed": metrics["in_scope_files"]})
     correlator_version = os.getenv("ECDAT_CORRELATOR_VERSION", "v2")
     findings = correlate_v3(evidence) if correlator_version == "v3" else correlate(evidence)
+    metrics["comparison_metadata"] = comparison_metadata(repo_path, metrics, version)
+    metrics["comparison_metadata"]["identity_consistent"] = (
+        git_before == git_identity(repo_path) and version == scanner_version()
+    )
+    attach_anchors(repo_path, findings, metrics["comparison_metadata"])
     if progress_callback is not None:
         progress_callback({**metrics["collector_stats"], "_phase": "persisting",
                            "_files_discovered": metrics["total_files"],
@@ -168,6 +181,8 @@ def persist_scan_result(
                 source=list(f.get("sources", [])),
                 location=f.get("location", ""),
                 evidence_json={
+                    "comparison_file": f.get("comparison_file"),
+                    "comparison_anchor": f.get("comparison_anchor", ""),
                     "component": f.get("component", "repository-root"),
                     "evidence_kind": f.get("evidence_kind", "unknown"),
                     "parser_version": parser_version,
@@ -238,6 +253,7 @@ def persist_scan_result(
         else:
             job.duration_ms = int(metrics.get("duration_ms", 0))
         job.collector_stats = metrics.get("collector_stats", {})
+        job.comparison_metadata = metrics.get("comparison_metadata", {})
         job.blind_spots = list(metrics.get("blind_spots", []))
         for failure in metrics.get("failures", []):
             if isinstance(failure, dict):

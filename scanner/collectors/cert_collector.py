@@ -118,6 +118,8 @@ def _asset_from_certificate(cert: x509.Certificate, path: str) -> CryptoAsset:
     evidence = {
         "key_size": key_size,
         "subject_cn": _common_name(cert.subject),
+        "subject_dn": cert.subject.rfc4514_string(),
+        "issuer_dn": cert.issuer.rfc4514_string(),
         "issuer": _common_name(cert.issuer),
         "version": cert.version.name,
         "not_after": not_after,

@@ -45,9 +45,59 @@ export interface CryptoAsset {
   hybrid_recommended: boolean;
   risk_context_provenance: Record<string, string>;
   created_at: string;
+  review_status?: ReviewStatus | "unreviewed";
+  review_version?: number;
+  reviewed_by?: string | null;
+  reviewed_at?: string | null;
+  review_reason?: string | null;
+}
+export type ReviewStatus = "confirmed_use" | "false_positive" | "uncertain";
+export interface AssetReview {
+  id: number;
+  asset_id: number;
+  version: number;
+  status: ReviewStatus;
+  reason: string;
+  reviewer: string;
+  reviewed_at: string;
+}
+export type ComparisonStatus =
+  "added" | "changed" | "unchanged" | "no_longer_observed" | "ambiguous" | "unknown";
+export interface ComparisonFinding {
+  id: number;
+  algorithm: string;
+  key_size: number | null;
+  location: string;
+  file: string | null;
+  priority_score: number;
+  review_status: string;
+}
+export interface ScanComparison {
+  baseline_id: number;
+  current_id: number;
+  baseline_snapshot: string;
+  current_snapshot: string;
+  baseline_findings: number;
+  current_findings: number;
+  totals: Record<ComparisonStatus, number>;
+  total: number;
+  offset: number;
+  limit: number;
+  warnings: string[];
+  items: {
+    status: ComparisonStatus;
+    reason: string;
+    file: string | null;
+    match_method: string;
+    changed_fields: string[];
+    baseline: ComparisonFinding[];
+    current: ComparisonFinding[];
+  }[];
 }
 export interface ScanJob {
   id: number;
+  comparison_ready?: boolean;
+  snapshot_id?: string;
   repo_path: string;
   status: string;
   started_at: string | null;
@@ -137,6 +187,7 @@ export interface CbomEntry {
 }
 
 export interface CbomComponent {
+  cryptoProperties?: Record<string, unknown>;
   type?: string;
   name?: string;
   purl?: string;

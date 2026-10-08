@@ -213,6 +213,29 @@ export async function getScan(id: number): Promise<import("../types").ScanJob> {
   return _get(`/api/scans/${id}`);
 }
 
+export async function getScanComparison(
+  baselineId: number,
+  currentId: number,
+  offset = 0,
+  status = "",
+) {
+  const params = new URLSearchParams({
+    baseline_id: String(baselineId),
+    current_id: String(currentId),
+    offset: String(offset),
+    limit: "50",
+  });
+  if (status) params.set("status", status);
+  const response = await authenticatedFetch(`/api/scans/compare?${params}`);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(
+      typeof error.detail === "string" ? error.detail : "Scan comparison could not be loaded.",
+    );
+  }
+  return response.json() as Promise<import("../types").ScanComparison>;
+}
+
 export async function cancelScan(id: number): Promise<{ status: string }> {
   return _post(`/api/scans/${id}/cancel`, {});
 }
@@ -292,6 +315,14 @@ export async function exportAssetsCsv(
 export async function getAsset(id: number): Promise<import("../types").CryptoAsset> {
   return _get(`/api/assets/${id}`);
 }
+
+export const getAssetReviews = (id: number, offset = 0) =>
+  _get<import("../types").AssetReview[]>(`/api/assets/${id}/reviews?limit=50&offset=${offset}`);
+
+export const reviewAsset = (
+  id: number,
+  data: { status: import("../types").ReviewStatus; reason: string; expected_version: number },
+) => _post<import("../types").CryptoAsset>(`/api/assets/${id}/reviews`, data);
 
 export async function updateAsset(
   id: number,

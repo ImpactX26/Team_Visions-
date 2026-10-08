@@ -70,7 +70,7 @@ try {
   const exposure = before.exposure === "internet" ? "internal" : "internet";
   const edited = page.waitForResponse(r => r.url().endsWith(`/api/assets/${before.id}`) && r.request().method() === "PATCH");
   await page.locator("select#exposure").selectOption(exposure);
-  const updated = await (await edited).json();
+  let updated = await (await edited).json();
   expect(updated.evidence_json).toEqual(before.evidence_json);
   expect(updated.confidence).toBe(before.confidence);
   for (const [field, value] of Object.entries(before.risk_context_provenance)) {
@@ -80,6 +80,28 @@ try {
   await expect(page.locator("select#exposure")).toHaveValue(exposure);
   if (process.env.ECDAT_DEMO_OUTPUT) await page.screenshot({ path: join(process.env.ECDAT_DEMO_OUTPUT, "risk-evidence-desktop.png"), fullPage: true });
   console.log("PASS live browser risk edit and reload with evidence/provenance preserved");
+  await page.getByLabel("Review decision", { exact: true }).selectOption("confirmed_use");
+  await page.getByLabel("Review reason", { exact: true }).fill("Verified the fixture operation and its source evidence.");
+  const reviewSaved = page.waitForResponse(r => r.url().endsWith(`/api/assets/${before.id}/reviews`) && r.request().method() === "POST");
+  await page.getByRole("button", { name: "Save review", exact: true }).click();
+  const reviewResponse = await reviewSaved;
+  expect(reviewResponse.status()).toBe(200);
+  updated = await reviewResponse.json();
+  expect(updated.review_status).toBe("confirmed_use");
+  expect(updated.reviewed_by).toBe(username);
+  expect(updated.evidence_json).toEqual(before.evidence_json);
+  expect(updated.confidence).toBe(before.confidence);
+  await page.reload();
+  await expect(page.getByText("Current decision:")).toContainText("Confirmed use");
+  await expect(page.getByRole("heading", { name: "Review history", exact: true })).toBeVisible();
+  const reviews = await get(`/api/assets/${before.id}/reviews`);
+  expect(reviews).toHaveLength(1);
+  expect(reviews[0].reviewer).toBe(username);
+  await page.setViewportSize({ width: 375, height: 812 });
+  await expect(page.getByRole("button", { name: "Save review", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)).toBe(false);
+  await page.setViewportSize({ width: 1280, height: 720 });
+  console.log("PASS live analyst review, reload, history and mobile layout; scanner evidence preserved");
   for (const [path, heading] of [
     [`/assets?scan_id=${job.scan_id}`, "Cryptographic assets"],
     [`/scans/${job.scan_id}`, `Scan #${job.scan_id}`],
@@ -103,6 +125,8 @@ try {
   const props = Object.fromEntries(component.properties.map(p => [p.name, p.value]));
   expect(Number(props["ecdat:asset:priority_score"])).toBe(updated.priority_score);
   expect(JSON.parse(props["ecdat:asset:risk_context_provenance"])).toEqual(updated.risk_context_provenance);
+  expect(props["ecdat:asset:review_status"]).toBe("confirmed_use");
+  expect(props["ecdat:asset:reviewed_by"]).toBe(username);
   const validation = spawnSync(join(root, ".venv/Scripts/python.exe"),
     [join(root, "scripts/validate_schema.py"), "--cbom", "--file", output], { encoding: "utf8", env: process.env });
   if (validation.status !== 0) throw new Error("Browser download failed offline schema validation");

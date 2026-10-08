@@ -29,6 +29,7 @@ from scanner.limits import (
     scan_memory_budget_mb,
 )
 from scanner.redaction import redact_evidence
+from scanner.snapshot import file_digest
 
 # Ensure `scanner` package is importable
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -191,6 +192,7 @@ def _collect_supported_evidence(
     duration_budget: int,
     evidence_limit: int,
     progress_callback: Callable[[dict[str, Any]], None] | None,
+    processing_manifest: dict | None = None,
 ) -> tuple[dict, dict[str, int], set[str]]:
     combined: dict[tuple[str, str], list[dict[str, Any]]] = {}
     collector_stats = dict.fromkeys(("ast", "rule", "dep", "cert"), 0)
@@ -214,10 +216,18 @@ def _collect_supported_evidence(
                 failure_codes[path] = budget_failure
                 failed_paths.add(path)
                 continue
+            before_digest = file_digest(path) if processing_manifest is not None else None
             evidence_count = _collect_path(
                 path, registry, combined, collector_stats, failed_paths,
                 failure_codes, evidence_count, evidence_limit,
             )
+            if processing_manifest is not None:
+                after_digest = file_digest(path)
+                processing_manifest[path] = {
+                    "status": "processed" if path not in failed_paths and before_digest
+                    and before_digest == after_digest else "unknown",
+                    "sha256": after_digest,
+                }
         now = time.perf_counter()
         if now - last_progress >= 1.0 or index == len(supported):
             report(index)
@@ -234,6 +244,7 @@ def _blind_spots(profile: str, supported: list[str], failed_paths: set[str], dur
          if profile == "source" else
          "Environment profile excludes .git, node_modules, dist, build and __pycache__ directories"),
         "Coverage measures files processed without reported collector errors, not detection completeness",
+        "JS/TS analysis covers direct Node crypto bindings and bounded literal selectors; WebCrypto, third-party APIs and interprocedural data flow are outside scope",
         "Linked directories/files are excluded; oversized files count as processing failures",
     ]
     if not supported:
@@ -276,11 +287,16 @@ def scan_with_metrics(
     mem_budget_code = check_memory_budget()
     if mem_budget_code:
         failure_codes[repo_path] = mem_budget_code
+    processing_manifest: dict[str, dict] = {}
     combined, collector_stats, failed_paths = _collect_supported_evidence(
         supported, len(all_files), failure_codes, registry, started, duration_budget,
-        evidence_limit, progress_callback,
+        evidence_limit, progress_callback, processing_manifest,
     )
     scanned = max(0, len(supported) - len(failed_paths))
+    # Files edited after their collector ran cannot establish a stable revisit.
+    for path, entry in processing_manifest.items():
+        if entry["status"] == "processed" and file_digest(path) != entry["sha256"]:
+            entry["status"] = "unknown"
     coverage = round(scanned / len(supported) * 100, 2) if supported else 0.0
     blind_spots = _blind_spots(profile, supported, failed_paths, duration_budget)
     failures = _failure_payload(repo_path, failed_paths, failure_codes)
@@ -291,6 +307,12 @@ def scan_with_metrics(
         "blind_spots": blind_spots,
         "failures": failures,
         "duration_ms": round((time.perf_counter() - started) * 1000),
+        "scan_profile": profile,
+        "processing_manifest": {
+            relative: processing_manifest.get(path, {"status": "unknown", "sha256": None})
+            for path in supported
+            if (relative := _relative_failure_path(repo_path, path)) is not None
+        },
     }
     total = sum(len(value) for value in combined.values())
     _print(f"=== Scan complete: {total} evidences, {coverage:.1f}% supported-file coverage ===")

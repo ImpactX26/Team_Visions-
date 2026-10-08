@@ -11,6 +11,7 @@ import { Disclosure } from "../components/Disclosure";
 import { useDirtyGuard } from "../utils/hooks";
 import Select from "../components/Select";
 import NumberField from "../components/NumberField";
+import AnalystReview from "../components/AnalystReview";
 import type { CryptoAsset, EvidenceEntry, EvidenceGraphResponse } from "../types";
 
 const DEPRECATED_ALGOS = new Set(["MD5", "SHA-1"]);
@@ -102,9 +103,14 @@ export default function AssetDetail() {
   const hasQuantumExposure = asset.quantum_vulnerable;
 
   function provenanceLabel(field: string): string {
-    return asset!.risk_context_provenance?.[field] === "user-provided"
-      ? "User-provided"
-      : "Policy default";
+    switch (asset!.risk_context_provenance?.[field]) {
+      case "user-provided":
+        return "User-provided";
+      case "policy-default":
+        return "Policy default";
+      default:
+        return "Unknown provenance";
+    }
   }
 
   return (
@@ -147,6 +153,8 @@ export default function AssetDetail() {
           </span>
         </div>
       </section>
+
+      <AnalystReview key={asset.id} asset={asset} onSaved={setAsset} />
 
       {asset.conflict && (
         <div className="callout error">
@@ -458,7 +466,8 @@ export default function AssetDetail() {
             </p>
             <p className="muted">
               Inputs marked Policy default are assumptions recorded with this finding. Set
-              organization-specific values to assess your own timeline.
+              organization-specific values to assess your own timeline. Unknown provenance means the
+              source of the value was not recorded or is not recognized.
             </p>
           </div>
 

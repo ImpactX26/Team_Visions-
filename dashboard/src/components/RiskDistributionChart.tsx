@@ -27,16 +27,16 @@ export default function RiskDistributionChart({
         />
         <Tooltip
           contentStyle={{
-            borderRadius: 10,
+            borderRadius: 3,
             border: "1px solid var(--line)",
             background: "var(--panel)",
             color: "var(--text)",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+            boxShadow: "none",
             fontSize: 13,
           }}
-          cursor={{ fill: "var(--indigo)", fillOpacity: 0.06 }}
+          cursor={{ fill: "var(--muted)", fillOpacity: 0.06 }}
         />
-        <Bar dataKey="count" fill="var(--indigo)" radius={[8, 8, 0, 0]} maxBarSize={56} />
+        <Bar dataKey="count" fill="var(--color-ink-soft)" radius={[2, 2, 0, 0]} maxBarSize={56} />
       </BarChart>
     </ResponsiveContainer>
   );

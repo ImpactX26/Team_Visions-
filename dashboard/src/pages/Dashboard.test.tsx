@@ -56,6 +56,22 @@ describe("Dashboard", () => {
     expect(screen.getByRole("button", { name: "Download risk report" })).toBeEnabled();
   });
 
+  it("does not request evaluation before any completed scan exists", async () => {
+    vi.mocked(getDashboardSummary).mockResolvedValue({
+      ...summary,
+      total_assets: 0,
+      latest_scan_id: null,
+    });
+    vi.mocked(getEvaluation).mockClear();
+    render(
+      <MemoryRouter>
+        <Dashboard />
+      </MemoryRouter>,
+    );
+    expect(await screen.findByText("No completed inventory")).toBeVisible();
+    expect(getEvaluation).not.toHaveBeenCalled();
+  });
+
   it("ignores an older scan failure after navigation", async () => {
     let rejectOld!: (error: Error) => void;
     vi.mocked(getDashboardSummary)

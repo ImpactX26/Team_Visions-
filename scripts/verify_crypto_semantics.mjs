@@ -1,0 +1,90 @@
+// Actual scan worker, browser and download; caller supplies a disposable database.
+import { createRequire } from "node:module";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { join } from "node:path";
+import { mkdir, writeFile, readFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+const root = fileURLToPath(new URL("../", import.meta.url));
+const require = createRequire(join(root, "dashboard/package.json"));
+const { chromium, expect } = require("@playwright/test");
+const { createServer } = await import(pathToFileURL(require.resolve("vite")).href);
+const api = process.env.ECDAT_REHEARSAL_API;
+const folder = process.env.ECDAT_REHEARSAL_FOLDER;
+if (!api?.startsWith("http://127.0.0.1:") || !folder) throw new Error("Disposable rehearsal configuration required");
+const repo = join(folder, "comparison-repo");
+await mkdir(repo, { recursive: true });
+await writeFile(join(repo, "operations.ts"), `import c, {createHmac as mac} from "node:crypto";
+const digest: string="sha256";
+c.createHash(digest);
+mac("sha256", "DO_NOT_EXPORT_SECRET");
+c.createCipheriv("aes-256-gcm", key, iv);
+c.generateKeyPairSync("rsa", {modulusLength:2048});
+c.createHash(dynamicSelector);
+function shadow(c: any){ c.createHash("md5"); }
+`);
+await writeFile(join(repo, "negative.js"), `const text="RSA AES MD5 createHash('md5')";
+// crypto.createHash('md5')
+const c={createHash(x){return x;}}; c.createHash("md5");`);
+const [username, account] = Object.entries(JSON.parse(process.env.ECDAT_USERS_JSON))[0];
+const server = await createServer({ configFile: join(root, "dashboard/vite.config.ts"), root: join(root, "dashboard"),
+  server: { host: "127.0.0.1", port: 0, strictPort: true, proxy: { "/api": { target: api, changeOrigin: true } } } });
+let browser;
+try {
+  await server.listen();
+  const origin = `http://127.0.0.1:${server.httpServer.address().port}`;
+  browser = await chromium.launch();
+  const page = await browser.newPage({ acceptDownloads: true, reducedMotion: "reduce" });
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  page.on("response", response => { if (response.url().includes("/api/") && response.status() >= 400) errors.push(`API ${response.status()}`); });
+  await page.goto(origin);
+  await page.getByLabel("Username").fill(username);
+  await page.getByLabel("Password").fill(account.password);
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(page.getByLabel("Username")).toHaveCount(0);
+  const session = await page.evaluate(() => JSON.parse(sessionStorage.getItem("ecdat-session")));
+  const get = async path => {
+    const response = await fetch(api + path, { headers: { Authorization: `Bearer ${session.accessToken}` } });
+    if (!response.ok) throw new Error(`API ${response.status()}`);
+    return response.json();
+  };
+  await page.goto(origin + "/scan");
+  await page.getByRole("textbox", { name: "Repository path", exact: true }).fill(repo);
+  const accepted = page.waitForResponse(r => r.url().endsWith("/api/scan") && r.request().method() === "POST");
+  await page.getByRole("button", { name: "Start scan", exact: true }).click();
+  const response = await accepted;
+  expect(response.ok()).toBe(true);
+  const {scan_id: scanId} = await response.json();
+  await expect.poll(async () => (await get(`/api/scans/${scanId}`)).status, {timeout:90000}).toBe("completed");
+  const scan = await get(`/api/scans/${scanId}`);
+  expect(scan.failed_files).toBe(0);
+  const assets = (await get(`/api/assets?scan_job_id=${scanId}`)).items;
+  expect(assets.map(a => a.algorithm).sort()).toEqual(["AES", "HMAC", "RSA", "SHA-256", "UNKNOWN"].sort());
+  const bom = await get(`/api/exports/cbom?scan_id=${scanId}`);
+  expect(bom.components).toHaveLength(5);
+  const byName = Object.fromEntries(bom.components.map(c => [c.name,c]));
+  expect(byName["HMAC-SHA-256"].cryptoProperties.algorithmProperties.primitive).toBe("mac");
+  expect(byName.AES.cryptoProperties.algorithmProperties).toEqual({primitive:"ae",mode:"gcm",parameterSetIdentifier:"256",cryptoFunctions:["encrypt"]});
+  expect(byName.RSA.cryptoProperties.algorithmProperties).toEqual({primitive:"unknown",parameterSetIdentifier:"2048",cryptoFunctions:["keygen"]});
+  expect(byName.UNKNOWN.type).toBe("data");
+  expect(JSON.stringify(bom)).not.toContain("DO_NOT_EXPORT_SECRET");
+  await page.goto(`${origin}/cbom?scan_id=${scanId}`);
+  await expect(page.getByText("Mode: gcm", {exact:true})).toBeVisible();
+  await expect(page.getByText("Primitive: mac", {exact:true})).toBeVisible();
+  const downloaded = page.waitForEvent("download");
+  await page.getByRole("button", {name:"Full JSON",exact:true}).click();
+  const download = await downloaded;
+  const output = join(folder,"native-cbom.json");
+  await download.saveAs(output);
+  expect(JSON.parse(await readFile(output,"utf8")).components).toEqual(bom.components);
+  execFileSync(join(root,".venv/Scripts/python.exe"), ["-c", "import json,sys; from backend.services.cbom_schema import validate_cbom; assert not validate_cbom(json.load(open(sys.argv[1])))", output], {cwd:root});
+  await page.setViewportSize({width:375,height:812});
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)).toBe(false);
+  expect(errors).toEqual([]);
+  await writeFile(join(folder,"semantics-result.json"), JSON.stringify({scanId,components:bom.components}));
+  console.log("PASS real JS/TS scan: 4 supported operations + 1 unresolved selector; negative file clean");
+  console.log("PASS native HMAC/AES/keygen semantics, full download, pinned schema, 375px browser, no secrets/errors");
+} finally {
+  if(browser) await browser.close();
+  await server.close();
+}

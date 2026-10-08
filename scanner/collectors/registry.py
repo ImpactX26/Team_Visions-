@@ -14,6 +14,7 @@ from collections.abc import Callable
 from scanner.collectors.ast_collector import ASTCollector
 from scanner.collectors.cert_collector import CertCollector
 from scanner.collectors.dep_collector import DepCollector
+from scanner.collectors.js_collector import JSCollector
 from scanner.collectors.rule_collector import CODE_EXTENSIONS, RuleCollector
 
 
@@ -29,6 +30,7 @@ class CollectorRegistry:
         self._rule = RuleCollector()
         self._dep = DepCollector()
         self._cert = CertCollector()
+        self._js = JSCollector()
 
         # Extension-based registrations (lowercase, include the dot).
         # A single extension can map to multiple handlers (e.g. ".py" maps
@@ -37,6 +39,8 @@ class CollectorRegistry:
         # losing handlers.
         self._extensions: dict[str, list[tuple[str, Callable]]] = {
             ".py": [("ast", self._ast.scan_file)],
+            ".js": [("ast", self._js.scan_file)],
+            ".ts": [("ast", self._js.scan_file)],
         }
 
         # Filename-based registrations (exact match; lookup is exact after
@@ -54,6 +58,8 @@ class CollectorRegistry:
         # Additional extensions registered after the filename map so they
         # don't shadow specific lockfile handling.
         for ext in CODE_EXTENSIONS:
+            if ext in {".js", ".ts"}:
+                continue
             self._extensions.setdefault(ext, []).append(("rule", self._rule.scan_file))
         for ext in (".crt", ".pem", ".cer"):
             self._extensions.setdefault(ext, []).append(("cert", self._cert.scan_cert))

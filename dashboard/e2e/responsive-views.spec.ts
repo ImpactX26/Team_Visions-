@@ -261,10 +261,15 @@ for (const vp of viewports) {
       // Navigate via the nav to CBOM
       await page.getByRole("link", { name: "CBOM", exact: true }).click();
       await expect(page).toHaveURL(/\/cbom$/);
+      await expect(
+        page.getByRole("heading", { name: "CBOM — Cryptographic Bill of Materials", exact: true }),
+      ).toBeVisible();
 
       // Navigate back to Overview
       if (vp.width <= 860) {
+        await expect(nav).toBeHidden();
         await page.getByRole("button", { name: "Toggle navigation menu" }).click();
+        await expect(nav).toBeVisible();
       }
       await page.getByRole("link", { name: "Overview", exact: true }).click();
       await expect(page).toHaveURL(/\/$/);
@@ -481,12 +486,12 @@ test.describe("Mobile nav: push-down behavior at 375px", () => {
     await signIn(page);
 
     const toggle = page.getByRole("button", { name: "Toggle navigation menu" });
-    const themeToggle = page.getByRole("button", { name: /switch to .+ mode/i });
+    const accountButton = page.getByRole("button", { name: "Account menu" });
     await toggle.click();
-    await themeToggle.focus();
+    await accountButton.focus();
 
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    await expect(themeToggle).toBeFocused();
+    await expect(accountButton).toBeFocused();
   });
 
   test("primary mobile navigation targets are at least 44 by 44 pixels", async ({ page }) => {

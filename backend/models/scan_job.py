@@ -26,6 +26,18 @@ class ScanJobDB(Base):
     duration_ms: int = Column(Integer, default=0)  # type: ignore[assignment]
     collector_stats = Column(JSON, default=dict)  # type: ignore[assignment]
     blind_spots = Column(JSON, default=list)  # type: ignore[assignment]
+    comparison_metadata = Column(JSON, nullable=False, default=dict, server_default="{}")
+
+    @property
+    def comparison_ready(self) -> bool:
+        metadata = self.comparison_metadata or {}
+        return bool(metadata.get("contract") == "ecdat-comparison-v1"
+                    and metadata.get("identity_consistent") is True
+                    and not metadata.get("git_unverified"))
+
+    @property
+    def snapshot_id(self) -> str:
+        return (self.comparison_metadata or {}).get("snapshot_id", "")
 
     __table_args__ = (
         Index("ix_scan_jobs_created_at", "started_at"),

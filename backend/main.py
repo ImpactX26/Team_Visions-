@@ -45,8 +45,9 @@ from backend.settings import SettingsError, get_settings
 
 logger = get_logger("ecdat.app")
 
-SCHEMA_REVISION = "0008_scan_admission"
+SCHEMA_REVISION = "0010_scan_comparison"
 REQUIRED_TABLES = {
+    "asset_reviews",
     "scan_jobs",
     "crypto_assets",
     "scan_failures",

@@ -210,6 +210,56 @@ async function signIn(page: Page) {
 
 test.beforeEach(async ({ page }) => mockApi(page));
 
+test("reference theme keeps dark surfaces and accessible green scan actions", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
+  await page.waitForTimeout(350); // Let color transitions settle before visual capture.
+  await page.screenshot({ path: "../tmp/reference-theme/login-desktop.png", fullPage: true });
+  await page.getByLabel("Username").fill("admin");
+  await page.getByLabel("Password").fill("valid-password");
+  const submit = page.getByRole("button", { name: "Sign in" });
+  await expect(submit).toHaveCSS("background-color", "rgb(54, 255, 94)");
+  await expect(submit).toHaveCSS("color", "rgb(2, 2, 2)");
+  await submit.click();
+  await expect(page.locator(".app-shell")).toBeVisible();
+  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(2, 2, 2)");
+  await expect(page.locator(".topbar")).toHaveCSS("background-color", "rgb(2, 3, 12)");
+  await expect(page.locator(".topbar")).toHaveCSS("backdrop-filter", "none");
+  for (const [name, route] of [
+    ["overview", "/"],
+    ["inventory", "/assets"],
+    ["scan", "/scans/73"],
+    ["cbom", "/cbom"],
+    ["report", "/reports"],
+  ]) {
+    await page.goto(route);
+    await expect(page.locator(".hero h1")).toBeVisible();
+    await page.waitForTimeout(450); // Capture resolved fixture data and settled route transitions.
+    await page.screenshot({ path: `../tmp/reference-theme/${name}-desktop.png`, fullPage: true });
+  }
+  await page.goto("/scan");
+  const start = page.getByRole("button", { name: /start scan/i });
+  await expect(start).toBeVisible();
+  await page.getByRole("textbox").first().fill("/test-repo");
+  await expect(start).toHaveCSS("background-color", "rgb(54, 255, 94)");
+  await expect(start).toHaveCSS("color", "rgb(2, 2, 2)");
+  await page.screenshot({ path: "../tmp/reference-theme/new-scan-desktop.png", fullPage: true });
+  await page.setViewportSize({ width: 375, height: 812 });
+  for (const [name, route] of [
+    ["inventory", "/assets"],
+    ["cbom", "/cbom"],
+    ["new-scan", "/scan"],
+  ]) {
+    await page.goto(route);
+    await expect(page.locator("main")).toBeVisible();
+    await page.waitForTimeout(450);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
+    await page.screenshot({ path: `../tmp/reference-theme/${name}-mobile.png`, fullPage: true });
+  }
+});
+
 test("reports show ranked migration priorities and evaluation metrics", async ({ page }) => {
   await signIn(page);
   await page.getByRole("link", { name: "Reports" }).click();
@@ -257,10 +307,7 @@ test("mobile dark mode honors the 375px viewport and reduced-motion preference",
   });
   await signIn(page);
 
-  const themeBtn = page.getByRole("button", { name: "Switch to dark mode" });
-  await themeBtn.scrollIntoViewIfNeeded();
-  await themeBtn.click();
-  await page.waitForTimeout(100);
+  await expect(page.getByRole("button", { name: /switch to .+ mode/i })).toHaveCount(0);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.getByRole("button", { name: "Toggle navigation menu" }).click();
   const navigation = page.getByRole("navigation", { name: "Main navigation" });
@@ -278,7 +325,7 @@ test("mobile dark mode honors the 375px viewport and reduced-motion preference",
     viewport: document.documentElement.clientWidth,
     page: document.documentElement.scrollWidth,
     reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
-    transitionDuration: getComputedStyle(document.querySelector(".theme-toggle")!)
+    transitionDuration: getComputedStyle(document.querySelector(".topbar-mobile-toggle")!)
       .transitionDuration,
   }));
   expect(layout.viewport).toBe(375);

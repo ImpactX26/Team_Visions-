@@ -199,12 +199,38 @@ class TestMigrations(unittest.TestCase):
 
     # ── migration graph ─────────────────────────────────────────────────────
 
+    def test_scan_comparison_metadata_defaults_legacy_and_survives_downgrade(self):
+        self._upgrade("0009_analyst_reviews")
+        with self._engine.begin() as conn:
+            conn.execute(text("INSERT INTO scan_jobs (id, repo_path, status) VALUES (1, '/legacy', 'completed')"))
+        self._upgrade("head")
+        with self._engine.connect() as conn:
+            self.assertEqual("{}", conn.execute(text("SELECT comparison_metadata FROM scan_jobs WHERE id=1")).scalar())
+        self._downgrade("0009_analyst_reviews")
+        with self._engine.connect() as conn:
+            self.assertEqual("/legacy", conn.execute(text("SELECT repo_path FROM scan_jobs WHERE id=1")).scalar())
+
+    def test_analyst_reviews_preserve_legacy_findings_and_downgrade(self):
+        self._upgrade("0008_scan_admission")
+        with self._engine.begin() as conn:
+            conn.execute(text("INSERT INTO scan_jobs (id, repo_path, status) VALUES (1, '/legacy', 'completed')"))
+            conn.execute(text("INSERT INTO crypto_assets (id, scan_job_id, algorithm, location, confidence, risk_context_provenance) VALUES (1, 1, 'RSA', 'crypto.py', 0.8, '{}')"))
+        self._upgrade("head")
+        with self._engine.connect() as conn:
+            row = conn.execute(text("SELECT review_status, review_version, reviewed_by, confidence FROM crypto_assets WHERE id=1")).one()
+        self.assertEqual(("unreviewed", 0, None, 0.8), tuple(row))
+        self.assertIn("asset_reviews", self._inspect().get_table_names())
+        self._downgrade("0008_scan_admission")
+        self.assertNotIn("asset_reviews", self._inspect().get_table_names())
+        with self._engine.connect() as conn:
+            self.assertEqual(0.8, conn.execute(text("SELECT confidence FROM crypto_assets WHERE id=1")).scalar())
+
     def test_linear_migration_graph(self):
         """Revisions form a single linear chain through the current head."""
         script = ScriptDirectory.from_config(_make_config(self.db_url))
         # walk_revisions() returns newest-to-oldest; reverse to oldest-first.
         revs = list(reversed(list(script.walk_revisions())))
-        self.assertEqual(8, len(revs))
+        self.assertEqual(10, len(revs))
         prev = None
         for rev in revs:
             self.assertEqual(prev, rev.down_revision,

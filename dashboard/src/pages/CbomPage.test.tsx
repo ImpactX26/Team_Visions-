@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
@@ -13,6 +13,35 @@ vi.mock("../api/client", () => ({
 }));
 
 describe("CbomPage", () => {
+  it("keeps the algorithm name distinct from native primitive metadata", async () => {
+    vi.mocked(getCbom).mockResolvedValue({
+      bomFormat: "CycloneDX",
+      specVersion: "1.6",
+      serialNumber: "urn:uuid:test",
+      metadata: {},
+      pagination: { total: 1, filtered: 1, offset: 0, limit: 100, loaded: 1 },
+      components: [
+        {
+          type: "cryptographic-asset",
+          name: "HMAC-SHA-256",
+          cryptoProperties: { assetType: "algorithm", algorithmProperties: { primitive: "mac" } },
+        },
+      ],
+    });
+    vi.mocked(getEvidenceGraph).mockResolvedValue({ scan_id: 1, nodes: [], edges: [] });
+    render(
+      <MemoryRouter>
+        <CbomPage />
+      </MemoryRouter>,
+    );
+    await screen.findByRole("heading", { name: /^HMAC-SHA-256$/ });
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: /^HMAC-SHA-256$/ })).toBeVisible();
+      expect(screen.getByText("Primitive: mac")).toBeVisible();
+      expect(screen.getByText("Required fields present")).toBeVisible();
+    });
+    expect(screen.queryByText("Valid CycloneDX")).not.toBeInTheDocument();
+  });
   it("downloads the whole displayed scan even when the current page is empty", async () => {
     vi.mocked(getCbom).mockResolvedValue({
       bomFormat: "CycloneDX",

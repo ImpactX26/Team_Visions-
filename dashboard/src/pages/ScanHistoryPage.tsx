@@ -60,6 +60,9 @@ export default function ScanHistoryPage() {
           <h1>Scan history</h1>
           <p>Inspect results and execution evidence from every repository scan.</p>
         </div>
+        <Link className="button secondary" to="/compare">
+          Compare scans
+        </Link>
         <Link className="button primary" to="/scan">
           New scan
         </Link>
