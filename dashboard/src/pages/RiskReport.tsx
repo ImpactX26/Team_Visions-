@@ -140,6 +140,9 @@ export default function RiskReportPage() {
           </p>
         </div>
         <div className="hero-actions">
+          <Link className="button" to="/remediation">
+            Try verified remediation
+          </Link>
           <Link className="button secondary" to={`/reports/scans/${report.scan_id}`}>
             Overall scan report
           </Link>

@@ -5,6 +5,92 @@ export interface EvidenceEntry {
   evidence?: Record<string, unknown>;
 }
 export type RiskLabel = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+export interface AssetRemediationPlan {
+  asset_id: number;
+  scan_id: number;
+  algorithm: string;
+  location: string;
+  target: string;
+  mode: "manual_review" | "patch_available";
+  reason: string;
+  checks: string[];
+  limitations: string[];
+  file?: string;
+  source_sha256?: string;
+  before_source?: string;
+  after_source?: string;
+  diff?: string;
+  rollback_diff?: string;
+}
+export interface AssetRemediationResult {
+  asset_id: number;
+  scan_id: number;
+  run_id: string;
+  generated_at: string;
+  status: "scanner_verified" | "inconclusive";
+  scope: string;
+  receipt_sha256: string;
+  checks: Array<{ name: string; passed: boolean }>;
+  before: RemediationSnapshot;
+  after: RemediationSnapshot;
+}
+export interface RemediationPlan {
+  rollback_diff?: string;
+  collision_preview?: {
+    payload_a: string;
+    payload_b: string;
+    changed_offsets: number[];
+    md5_a: string;
+    md5_b: string;
+    sha256_a: string;
+    sha256_b: string;
+  };
+  recipe_id: string;
+  title: string;
+  before_source: string;
+  after_source: string;
+  source_sha256: string;
+  diff: string;
+  limitations: string[];
+}
+interface RemediationSnapshot {
+  findings: Array<{
+    algorithm: string;
+    file: string;
+    location: string;
+    sources: string[];
+    confidence: number;
+    priority_label: string;
+    risk_reasons: string[];
+  }>;
+  coverage_pct: number;
+  scanned_files: number;
+  in_scope_files: number;
+  failed_files: number;
+}
+export interface RemediationResult extends RemediationPlan {
+  stages?: Array<{ name: string; duration_ms: number }>;
+  duration_ms?: number;
+  verification_reasons?: string[];
+  run_id: string;
+  generated_at: string;
+  status: "verified" | "inconclusive";
+  before: RemediationSnapshot;
+  after: RemediationSnapshot;
+  checks: Array<{ name: string; passed: boolean }>;
+  comparison: Record<"removed" | "introduced" | "unchanged", Array<[string, string]>>;
+  collision: {
+    payload_bytes: number;
+    different_bytes: number;
+    md5_a: string;
+    md5_b: string;
+    sha256_a: string;
+    sha256_b: string;
+  };
+  receipt_sha256: string;
+  after_source_sha256: string;
+  scope: string;
+}
 export interface CryptoAsset {
   id: number;
   scan_job_id: number;

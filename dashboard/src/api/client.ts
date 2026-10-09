@@ -315,6 +315,17 @@ export async function exportAssetsCsv(
 export async function getAsset(id: number): Promise<import("../types").CryptoAsset> {
   return _get(`/api/assets/${id}`);
 }
+export const getRemediationPreview = () =>
+  _get<import("../types").RemediationPlan>("/api/remediation/preview");
+export const getAssetRemediationPreview = (id: number) =>
+  _get<import("../types").AssetRemediationPlan>(`/api/remediation/assets/${id}/preview`);
+export const verifyAssetRemediation = (id: number, source_sha256: string) =>
+  _post<import("../types").AssetRemediationResult>(`/api/remediation/assets/${id}/verify`, {
+    source_sha256,
+    integrity_checksum_confirmed: true,
+  });
+export const verifyRemediation = (source_sha256: string) =>
+  _post<import("../types").RemediationResult>("/api/remediation/verify", { source_sha256 });
 
 export const getAssetReviews = (id: number, offset = 0) =>
   _get<import("../types").AssetReview[]>(`/api/assets/${id}/reviews?limit=50&offset=${offset}`);

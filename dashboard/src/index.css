@@ -30,6 +30,7 @@
 @import "./styles/workspace.css"; /* Unified assurance workspace — final visual authority */
 @import "./styles/auth.css"; /* Scoped login layout after shared workspace rules */
 @import "./styles/impactx-theme.css"; /* Default ImpactX black-and-lime theme */
+@import "./styles/remediation.css";
 
 /* ═══════════════════════════════════════════════════════════════════
    Print Styles — reports and dashboards

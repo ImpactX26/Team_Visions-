@@ -21,6 +21,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const AssetDetail = lazy(() => import("./pages/AssetDetail"));
 const AlgorithmReportPage = lazy(() => import("./pages/AlgorithmReport"));
 const ScanReportPage = lazy(() => import("./pages/ScanReport"));
+const RemediationLab = lazy(() => import("./pages/RemediationLab"));
 const ScanPage = lazy(() => import("./pages/ScanPage"));
 const AssetsPage = lazy(() => import("./pages/AssetsPage"));
 const RiskReportPage = lazy(() => import("./pages/RiskReport"));
@@ -196,6 +197,7 @@ function AppInner() {
           )}
           <NavLink to={`/reports${scanQuery}`}>Reports</NavLink>
           <NavLink to={`/cbom${scanQuery}`}>CBOM</NavLink>
+          <NavLink to="/remediation">Remediation</NavLink>
         </nav>
         <button
           ref={mobileNavToggleRef}
@@ -347,6 +349,7 @@ function AppInner() {
                 <Route path="/reports" element={<RiskReportPage />} />
                 <Route path="/reports/algorithms/:id" element={<AlgorithmReportPage />} />
                 <Route path="/reports/scans/:id" element={<ScanReportPage />} />
+                <Route path="/remediation" element={<RemediationLab />} />
                 <Route path="/cbom" element={<CbomPage />} />
                 <Route path="/scans" element={<ScanHistoryPage />} />
                 <Route path="/compare" element={<ScanCompare />} />

@@ -55,14 +55,20 @@ id_ed25519
 *.log
 *.log.*
 logs/
+# Server captures, remediation source fixtures, browser screenshots and smoke-test scripts
 .server-logs/
 .eslintcache
+# Disposable scanner/remediation runs and local test databases
 .runtime/
 tmp/
 temp/
 *.tmp
 *.bak
 *.swp
+
+# Local artifacts from applying or reversing downloaded remediation patches
+*.orig
+*.rej
 
 # Editor and OS files
 .idea/

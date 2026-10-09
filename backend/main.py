@@ -40,6 +40,7 @@ from backend.routers.dashboard import router as dashboard_router
 from backend.routers.observability import router as observability_router
 from backend.routers.outputs import router as outputs_router
 from backend.routers.scan import router as scan_router
+from backend.routers.remediation import router as remediation_router
 from backend.security import current_role
 from backend.settings import SettingsError, get_settings
 
@@ -409,6 +410,7 @@ app.add_middleware(
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(scan_router, dependencies=[Depends(current_role)])
+app.include_router(remediation_router)
 app.include_router(assets_router, dependencies=[Depends(current_role)])
 app.include_router(dashboard_router, dependencies=[Depends(current_role)])
 app.include_router(outputs_router, dependencies=[Depends(current_role)])

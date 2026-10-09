@@ -6,10 +6,10 @@ const FRONTEND_BUDGETS = {
   maxBundleGzipKb: 500,
   // RNSIT baseline after the evidence, history, and responsive assurance views.
   // Keep narrow headroom so a material regression still fails the build.
-  // Includes lazy occurrence and overall scan reports; measured total 854.7KB.
-  maxTotalJsKb: 858,
-  // ImpactX login, print layout, and report library: measured CSS 157.4KB.
-  maxCssKb: 159,
+  // Includes finding source review and verification; measured total ~884.3KB.
+  maxTotalJsKb: 888,
+  // ImpactX reports, login, print, and remediation: measured CSS ~163KB.
+  maxCssKb: 165,
 };
 
 export default defineConfig(({ mode }) => ({
