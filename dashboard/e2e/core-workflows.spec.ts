@@ -87,3 +87,63 @@ test("an administrator can sign in and start a repository scan", async ({ page }
   await expect(page.getByRole("heading", { name: "Scanning repository" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Cancel scan" })).toBeVisible();
 });
+
+for (const reduced of [false, true]) {
+  test(`scan motion preserves measured progress and stops on cancellation (${reduced ? "reduced" : "normal"})`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: reduced ? "reduce" : "no-preference" });
+    let status = "running";
+    await page.route("**/api/scans/41", (route) =>
+      route.fulfill({
+        json: {
+          id: 41,
+          repo_path: "/test-repo",
+          status,
+          started_at: null,
+          finished_at: null,
+          assets_found: 2,
+          total_files: 10,
+          in_scope_files: 10,
+          scanned_files: 4,
+          failed_files: 0,
+          coverage_pct: 40,
+          collector_stats: { _phase: "scanning", _files_processed: 4, _files_total: 10 },
+          blind_spots: [],
+        },
+      }),
+    );
+    await page.route("**/api/scans/41/cancel", (route) => {
+      status = "cancelled";
+      return route.fulfill({ json: { status } });
+    });
+    await page.goto("/");
+    await page.getByLabel("Username").fill("admin");
+    await page.getByLabel("Password").fill("valid-password");
+    await page.getByRole("button", { name: "Sign in" }).click();
+    await page.getByRole("link", { name: "New scan" }).click();
+    await page.getByRole("textbox", { name: "Repository path" }).fill("/test-repo");
+    await page.getByRole("button", { name: "Start scan" }).click();
+    const progress = page.getByRole("progressbar", { name: "File processing progress" });
+    await expect(progress).toHaveAttribute("aria-valuenow", "40");
+    await expect(page.locator(".scan-activity")).toBeVisible();
+    await expect(page.locator(".scan-activity path")).toHaveCount(reduced ? 1 : 2);
+    await expect(page.locator(".scan-progress-bar")).toHaveCSS(
+      "transform",
+      "matrix(0.4, 0, 0, 1, 0, 0)",
+    );
+    if (!reduced) {
+      const signal = page.locator(".scan-activity path").nth(1);
+      const offset = await signal.getAttribute("stroke-dashoffset");
+      await expect.poll(() => signal.getAttribute("stroke-dashoffset")).not.toBe(offset);
+    }
+    await page.screenshot({
+      path: `../tmp/motion-evidence/scan-${reduced ? "reduced" : "active"}.png`,
+      fullPage: true,
+    });
+    await page.getByRole("button", { name: "Cancel scan" }).click();
+    await expect(page.getByRole("heading", { name: "Scan cancelled" })).toBeVisible();
+    await expect(page.locator(".scan-activity")).toHaveCount(0);
+    await expect(progress).toHaveCount(0);
+  });
+}

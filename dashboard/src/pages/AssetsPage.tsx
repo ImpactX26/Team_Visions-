@@ -2,7 +2,7 @@
 // Filter state is synced to URL search params for shareability.
 import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { getAssets, getDashboardSummary, exportAssetsCsv, canWrite } from "../api/client";
 import { RiskBadge } from "../components/RiskBadge";
 import { displayPath, highlightText } from "../utils/format";
@@ -616,6 +616,13 @@ export default function AssetsPage() {
                           />
                         </small>
                       </Link>
+                      <Link
+                        className="row-link"
+                        to={`/reports/algorithms/${a.id}`}
+                        aria-label={`Detailed ${a.algorithm} report for asset ${a.id}`}
+                      >
+                        Detailed report
+                      </Link>
                     </td>
                     {visibleCols.includes("context") && (
                       <td aria-colindex={3} data-label="Context">
@@ -811,8 +818,15 @@ function AssetMobileCard({
   selected: boolean;
   onSelect: () => void;
 }) {
+  const reduced = useReducedMotion();
   return (
-    <article className={`asset-mobile-card${selected ? " selected" : ""}`}>
+    <motion.article
+      className={`asset-mobile-card${selected ? " selected" : ""}`}
+      initial={reduced ? false : { opacity: 1, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={reduced ? undefined : { y: -2 }}
+      transition={{ duration: reduced ? 0 : 0.18 }}
+    >
       <div className="asset-mobile-card-head">
         <label className="asset-mobile-select">
           <input type="checkbox" checked={selected} onChange={onSelect} />
@@ -845,6 +859,9 @@ function AssetMobileCard({
       <Link className="row-link asset-mobile-inspect" to={`/assets/${asset.id}`}>
         Inspect finding <span aria-hidden="true">→</span>
       </Link>
-    </article>
+      <Link className="row-link asset-mobile-inspect" to={`/reports/algorithms/${asset.id}`}>
+        Detailed report <span aria-hidden="true">→</span>
+      </Link>
+    </motion.article>
   );
 }

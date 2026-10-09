@@ -10,6 +10,7 @@ import {
 } from "./api/client";
 import { NavLink, Route, Routes, useSearchParams, useLocation } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
+import { PageMotion } from "./components/WorkspaceMotion";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ToastProvider, useToast } from "./components/Toast";
 import { ConfirmDialog } from "./components/ConfirmDialog";
@@ -18,6 +19,8 @@ import NotFound from "./pages/NotFound";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const AssetDetail = lazy(() => import("./pages/AssetDetail"));
+const AlgorithmReportPage = lazy(() => import("./pages/AlgorithmReport"));
+const ScanReportPage = lazy(() => import("./pages/ScanReport"));
 const ScanPage = lazy(() => import("./pages/ScanPage"));
 const AssetsPage = lazy(() => import("./pages/AssetsPage"));
 const RiskReportPage = lazy(() => import("./pages/RiskReport"));
@@ -157,7 +160,7 @@ function AppInner() {
         <NavLink className="brand" to="/">
           <img className="brand-mark" src="/ecdat-logo.svg" alt="" aria-hidden="true" />
           <span>
-            ECDAT<small>Security console</small>
+            ImpactX<small>Assurance</small>
           </span>
         </NavLink>
         <nav
@@ -330,28 +333,32 @@ function AppInner() {
           fallback={
             <div className="state">
               <span className="spinner" />
-              <h1>Loading ECDAT</h1>
+              <h1>Loading ImpactX</h1>
             </div>
           }
         >
           <ErrorBoundary>
-            <Routes location={location} key={location.pathname + location.search}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/assets" element={<AssetsPage />} />
-              <Route path="/assets/:id" element={<AssetDetail />} />
-              <Route path="/scan" element={<ScanPage />} />
-              <Route path="/reports" element={<RiskReportPage />} />
-              <Route path="/cbom" element={<CbomPage />} />
-              <Route path="/scans" element={<ScanHistoryPage />} />
-              <Route path="/compare" element={<ScanCompare />} />
-              <Route path="/scans/:id" element={<ScanDetailPage />} />
-              <Route path="/evidence-graph" element={<EvidenceGraphPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <PageMotion key={location.pathname}>
+              <Routes location={location} key={location.pathname + location.search}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/assets" element={<AssetsPage />} />
+                <Route path="/assets/:id" element={<AssetDetail />} />
+                <Route path="/scan" element={<ScanPage />} />
+                <Route path="/reports" element={<RiskReportPage />} />
+                <Route path="/reports/algorithms/:id" element={<AlgorithmReportPage />} />
+                <Route path="/reports/scans/:id" element={<ScanReportPage />} />
+                <Route path="/cbom" element={<CbomPage />} />
+                <Route path="/scans" element={<ScanHistoryPage />} />
+                <Route path="/compare" element={<ScanCompare />} />
+                <Route path="/scans/:id" element={<ScanDetailPage />} />
+                <Route path="/evidence-graph" element={<EvidenceGraphPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </PageMotion>
           </ErrorBoundary>
         </Suspense>
       </main>
-      <footer>ECDAT · RNSIT26164 · Evidence-backed cryptographic discovery assurance</footer>
+      <footer>ImpactX · Evidence-backed cryptographic discovery assurance</footer>
       <ConfirmDialog
         open={confirmLogout}
         title="Sign out?"

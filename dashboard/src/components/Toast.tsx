@@ -9,6 +9,7 @@ import React, {
   useRef,
   type ReactNode,
 } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 export type ToastVariant = "info" | "success" | "error" | "warning";
 
@@ -38,6 +39,7 @@ const ToastContext = createContext<ToastContextValue>({
 let nextId = 0;
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
+  const reduced = useReducedMotion();
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const timers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
 
@@ -119,38 +121,45 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     >
       {children}
       <div className="toast-container">
-        {toasts.map((t) => {
-          const now = Date.now();
-          const remaining = Math.max(0, t.expiresAt - now);
-          const pct = (remaining / TOAST_DURATION) * 100;
-          return (
-            <div
-              key={t.id}
-              className={`toast toast-${t.variant}`}
-              role={t.variant === "error" ? "alert" : "status"}
-              aria-live={t.variant === "error" ? "assertive" : "polite"}
-              aria-atomic="true"
-              onMouseEnter={() => pause(t.id)}
-              onMouseLeave={() => resume(t.id)}
-            >
-              <span className="toast-icon" aria-hidden="true">
-                {t.variant === "success" && "✓"}
-                {t.variant === "error" && "✗"}
-                {t.variant === "warning" && "⚠"}
-                {t.variant === "info" && "ℹ"}
-              </span>
-              <span className="toast-msg">{t.message}</span>
-              <button
-                className="toast-close"
-                onClick={() => remove(t.id)}
-                aria-label={`Dismiss ${t.variant} notification`}
+        <AnimatePresence initial={false}>
+          {toasts.map((t) => {
+            const now = Date.now();
+            const remaining = Math.max(0, t.expiresAt - now);
+            const pct = (remaining / TOAST_DURATION) * 100;
+            return (
+              <motion.div
+                key={t.id}
+                layout="position"
+                initial={reduced ? false : { opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: reduced ? 0 : 8 }}
+                transition={{ duration: reduced ? 0 : 0.18 }}
+                className={`toast toast-${t.variant}`}
+                role={t.variant === "error" ? "alert" : "status"}
+                aria-live={t.variant === "error" ? "assertive" : "polite"}
+                aria-atomic="true"
+                onMouseEnter={() => pause(t.id)}
+                onMouseLeave={() => resume(t.id)}
               >
-                &times;
-              </button>
-              <div className="toast-progress" style={{ width: `${pct}%` }} />
-            </div>
-          );
-        })}
+                <span className="toast-icon" aria-hidden="true">
+                  {t.variant === "success" && "✓"}
+                  {t.variant === "error" && "✗"}
+                  {t.variant === "warning" && "⚠"}
+                  {t.variant === "info" && "ℹ"}
+                </span>
+                <span className="toast-msg">{t.message}</span>
+                <button
+                  className="toast-close"
+                  onClick={() => remove(t.id)}
+                  aria-label={`Dismiss ${t.variant} notification`}
+                >
+                  &times;
+                </button>
+                <div className="toast-progress" style={{ width: `${pct}%` }} />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
     </ToastContext.Provider>
   );

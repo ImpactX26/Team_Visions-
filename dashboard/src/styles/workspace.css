@@ -5,7 +5,7 @@
   --ws-bg: #020202;
   color-scheme: dark;
   --ws-surface: #02030c;
-  --ws-surface-raised: #02030c;
+  --ws-surface-raised: #11141b;
   --ws-surface-muted: #101114;
   --ws-surface-strong: #02030c;
   --ws-text: #ffffff;
@@ -31,7 +31,7 @@
   --ws-radius-lg: 4px;
   --ws-font: "Fira Sans", "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
   --ws-mono: "Fira Code", "Cascadia Code", "SFMono-Regular", Consolas, monospace;
-  --ws-content: 1500px;
+  --ws-content: 1400px;
   --ws-header: 68px;
   --ws-button-ink: #020202;
   --ws-transition: 180ms ease;

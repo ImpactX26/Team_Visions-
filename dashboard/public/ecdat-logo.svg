@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="2" fill="#02030C" stroke="#333536"/>
-  <text x="16" y="23" font-family="Manrope, Arial, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle">E</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <title>ImpactX</title>
+  <rect width="40" height="40" rx="4" fill="#c5ff4a"/>
+  <path d="M9 10h8l14 20h-8z" fill="#060606"/>
+  <path d="M25 10h6L15 30H9z" fill="#060606"/>
 </svg>

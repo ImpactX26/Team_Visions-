@@ -1,7 +1,7 @@
 // CBOM (Cryptographic Bill of Materials) viewer.
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { downloadReport, getCbom, getEvidenceGraph, getRiskReport } from "../api/client";
 import type { OutputPagination } from "../api/client";
 import { displayPath, formatDate } from "../utils/format";
@@ -29,7 +29,7 @@ const staggerContainer = {
   animate: { transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
 };
 const staggerItem = {
-  initial: { opacity: 0, y: 8 },
+  initial: { opacity: 1, y: 8 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
@@ -73,6 +73,7 @@ function readStringArray(value: string | undefined): string[] {
 }
 
 export default function CbomPage() {
+  const reduced = useReducedMotion();
   const [params] = useSearchParams();
   const scanId = params.get("scan_id") ? Number(params.get("scan_id")) : undefined;
 
@@ -465,6 +466,8 @@ export default function CbomPage() {
                         className={`cbom-component-card ${riskClass}`}
                         key={compKey}
                         variants={staggerItem}
+                        whileHover={reduced ? undefined : { y: -2 }}
+                        transition={{ duration: 0.16 }}
                       >
                         <div className="cbom-comp-header">
                           <span className="cbom-comp-type">{typeVal}</span>

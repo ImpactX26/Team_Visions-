@@ -55,6 +55,7 @@ id_ed25519
 *.log
 *.log.*
 logs/
+.server-logs/
 .eslintcache
 .runtime/
 tmp/
@@ -87,6 +88,16 @@ loop-*
 gate.yaml
 patterns/
 graphify-out/
+
+# Local presentation exports, extracted media, and Office lock files
+/presentation_cleanup/
+/ECDAT_Cryptographic_Assurance_Engine_Cleaned.pptx
+/docs/presentation/preview/
+/docs/presentation/risk-crop.png
+/docs/presentation/ECDAT_Hackathon.html
+/docs/presentation/ECDAT_Hackathon.pdf
+/docs/presentation/ECDAT_Hackathon.pptx
+~$*
 
 # Local verification captures (keep summary reports and curated demo evidence)
 docs/verification/

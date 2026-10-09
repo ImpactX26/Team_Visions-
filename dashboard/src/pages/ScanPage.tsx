@@ -1,6 +1,7 @@
 // New Scan - focused one-screen repository workflow.
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { PageMotion, ProgressFill, ScanActivity } from "../components/WorkspaceMotion";
 import {
   scanRepo,
   getScans,
@@ -350,7 +351,7 @@ export default function ScanPage() {
             aria-valuemax={100}
             aria-label="File processing progress"
           >
-            <div className="scan-progress-bar" style={{ width: "100%" }} />
+            <ProgressFill className="scan-progress-bar" value={100} />
           </div>
         )}
         <div className="scan-completed-actions">
@@ -380,68 +381,71 @@ export default function ScanPage() {
         ? "Initialising…"
         : activityPhase.replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase());
     return (
-      <div className="scan-running">
-        <h2>Scanning repository</h2>
-        <div className="scan-running-meta">
-          <span className="scan-running-repo">{repoPath}</span>
-          <span className="scan-running-elapsed">{formatDuration(elapsed)}</span>
+      <PageMotion>
+        <div className="scan-running">
+          <h2>Scanning repository</h2>
+          <ScanActivity />
+          <div className="scan-running-meta">
+            <span className="scan-running-repo">{repoPath}</span>
+            <span className="scan-running-elapsed">{formatDuration(elapsed)}</span>
+          </div>
+          <div
+            className="scan-progress"
+            role="progressbar"
+            aria-valuenow={processingComplete ? undefined : (coveragePercent ?? undefined)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="File processing progress"
+          >
+            <ProgressFill className="scan-progress-bar" value={coveragePercent ?? 0} />
+          </div>
+          <div className="scan-running-stats">
+            <div>
+              <span className="scan-stat-value">{statusLabel}</span>
+              <span className="scan-stat-label">Phase</span>
+            </div>
+            <div>
+              <span className="scan-stat-value">
+                {filesProcessed.toLocaleString()}
+                {filesTotal !== undefined ? ` / ${filesTotal.toLocaleString()}` : ""}
+              </span>
+              <span className="scan-stat-label">{filesLabel}</span>
+            </div>
+            <div>
+              <span className="scan-stat-value">{findingsCount}</span>
+              <span className="scan-stat-label">Findings</span>
+            </div>
+            <div>
+              <span className="scan-stat-value">
+                {processingComplete
+                  ? "Finalising"
+                  : coveragePercent !== null
+                    ? `${coveragePercent}%`
+                    : "Determining scope"}
+              </span>
+              <span className="scan-stat-label">Live scan progress</span>
+            </div>
+          </div>
+          {startError && (
+            <p className="scan-input-error" role="alert">
+              {startError}
+            </p>
+          )}
+          {blindSpots.length > 0 && (
+            <div className="scan-blind-spots" role="note" aria-label="Declared blind spots">
+              <strong>Declared blind spots:</strong>
+              <ul>
+                {blindSpots.map((b) => (
+                  <li key={b}>{b}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <button className="button ghost" onClick={handleCancel} disabled={cancelling}>
+            {cancelling ? "Cancelling…" : "Cancel scan"}
+          </button>
         </div>
-        <div
-          className="scan-progress"
-          role="progressbar"
-          aria-valuenow={processingComplete ? undefined : (coveragePercent ?? undefined)}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label="File processing progress"
-        >
-          <div className="scan-progress-bar" style={{ width: `${coveragePercent ?? 0}%` }} />
-        </div>
-        <div className="scan-running-stats">
-          <div>
-            <span className="scan-stat-value">{statusLabel}</span>
-            <span className="scan-stat-label">Phase</span>
-          </div>
-          <div>
-            <span className="scan-stat-value">
-              {filesProcessed.toLocaleString()}
-              {filesTotal !== undefined ? ` / ${filesTotal.toLocaleString()}` : ""}
-            </span>
-            <span className="scan-stat-label">{filesLabel}</span>
-          </div>
-          <div>
-            <span className="scan-stat-value">{findingsCount}</span>
-            <span className="scan-stat-label">Findings</span>
-          </div>
-          <div>
-            <span className="scan-stat-value">
-              {processingComplete
-                ? "Finalising"
-                : coveragePercent !== null
-                  ? `${coveragePercent}%`
-                  : "Determining scope"}
-            </span>
-            <span className="scan-stat-label">Live scan progress</span>
-          </div>
-        </div>
-        {startError && (
-          <p className="scan-input-error" role="alert">
-            {startError}
-          </p>
-        )}
-        {blindSpots.length > 0 && (
-          <div className="scan-blind-spots" role="note" aria-label="Declared blind spots">
-            <strong>Declared blind spots:</strong>
-            <ul>
-              {blindSpots.map((b) => (
-                <li key={b}>{b}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <button className="button ghost" onClick={handleCancel} disabled={cancelling}>
-          {cancelling ? "Cancelling…" : "Cancel scan"}
-        </button>
-      </div>
+      </PageMotion>
     );
   }
 

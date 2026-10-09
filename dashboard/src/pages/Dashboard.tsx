@@ -1,7 +1,7 @@
 // Portfolio posture, assurance measurements, and research evaluation.
-import { lazy, Suspense, useEffect, useState, memo, useRef, useCallback, useMemo } from "react";
+import { lazy, Suspense, useEffect, useState, memo, useCallback, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
   downloadReport,
   getDashboardSummary,
@@ -27,7 +27,7 @@ const listStagger: Variants = {
 };
 
 const staggerItem: Variants = {
-  initial: { opacity: 0, y: 14 },
+  initial: { opacity: 1, y: 10 },
   animate: {
     opacity: 1,
     y: 0,
@@ -40,7 +40,7 @@ const RiskDistributionChart = lazy(() => import("../components/RiskDistributionC
 const SCAN_STATUS_FILTERS = ["all", "completed", "failed", "cancelled", "running"] as const;
 type ScanStatusFilter = (typeof SCAN_STATUS_FILTERS)[number];
 
-// ── Animated counter ────────────────────────────────────────────
+// Keep measured values exact; animate their update, never an invented count.
 const AnimatedNumber = memo(function AnimatedNumber({
   value,
   suffix = "",
@@ -48,52 +48,19 @@ const AnimatedNumber = memo(function AnimatedNumber({
   value: number;
   suffix?: string;
 }) {
-  const [display, setDisplay] = useState(0);
-  const rafRef = useRef<number>(0);
-  const displayRef = useRef(0);
-
-  useEffect(() => {
-    // Skip animation when reduced motion is preferred
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplay(value);
-      displayRef.current = value;
-      return;
-    }
-
-    // Cancel any in-progress animation
-    cancelAnimationFrame(rafRef.current);
-
-    // If already at target, don't animate
-    if (displayRef.current === value) {
-      setDisplay(value);
-      return;
-    }
-
-    const duration = 600;
-    const start = performance.now();
-    const from = displayRef.current;
-
-    const step = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const next = Math.round(from + (value - from) * eased);
-      const clamped = Math.max(0, next); // never negative
-      displayRef.current = clamped;
-      setDisplay(clamped);
-      if (t < 1) rafRef.current = requestAnimationFrame(step);
-    };
-
-    rafRef.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [value]);
+  const reduced = useReducedMotion();
   return (
-    <>
-      {display}
+    <motion.span
+      key={value}
+      initial={reduced ? false : { opacity: 0.65, y: 3 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: reduced ? 0 : 0.2 }}
+    >
+      {value}
       {suffix}
-    </>
+    </motion.span>
   );
 });
-
 // ── Sub-row: Posture Summary ────────────────────────────────────
 const PostureRow = memo(function PostureRow({
   summary,

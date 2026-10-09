@@ -1,6 +1,7 @@
 // Renders a horizontal bar whose width maps confidence (0-1) to 0-100%,
 // color-coded: green > 0.8, yellow 0.5-0.8, red < 0.5.
 import { memo } from "react";
+import { ProgressFill } from "./WorkspaceMotion";
 
 interface Props {
   confidence: number;
@@ -13,7 +14,7 @@ export const ConfidenceBar = memo(function ConfidenceBar({ confidence }: Props) 
   return (
     <div className={`confidence-bar ${cls}`}>
       <div className="track">
-        <div className="fill" style={{ width: `${pct}%` }} />
+        <ProgressFill className="fill" value={pct} />
       </div>
       <span className="pct">{pct}% evidence confidence</span>
     </div>

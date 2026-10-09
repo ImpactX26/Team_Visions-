@@ -1,6 +1,6 @@
 // Detailed evidence, Mosca inputs, and use-case-aware migration guidance.
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getAsset, updateAsset, canWrite, getEvidenceGraph } from "../api/client";
 import { ConfidenceBar } from "../components/ConfidenceBar";
 import { EvidenceChain } from "../components/EvidenceChain";
@@ -134,6 +134,12 @@ export default function AssetDetail() {
           <p className="path">{asset.location}</p>
         </div>
         <div className="risk-stack">
+          <Link className="button secondary" to={`/reports/algorithms/${asset.id}`}>
+            Detailed algorithm report
+          </Link>
+          <Link className="button secondary" to={`/reports/scans/${asset.scan_job_id}`}>
+            Overall scan report
+          </Link>
           <RiskBadge label={asset.priority_label} score={asset.priority_score} />
           {scoreUpdated && (
             <span className="score-recalculated" aria-live="polite">

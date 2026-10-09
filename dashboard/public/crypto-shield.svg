@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="300" viewBox="0 0 600 300" fill="none">
-<defs><linearGradient id="s" x1="220" y1="30" x2="370" y2="260" gradientUnits="userSpaceOnUse"><stop stop-color="#54F6B1" stop-opacity=".22"/><stop offset="1" stop-color="#54F6B1" stop-opacity=".02"/></linearGradient><pattern id="g" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" stroke="#54F6B1" stroke-opacity=".07"/></pattern></defs>
+<defs><linearGradient id="s" x1="220" y1="30" x2="370" y2="260" gradientUnits="userSpaceOnUse"><stop stop-color="#C5FF4A" stop-opacity=".22"/><stop offset="1" stop-color="#C5FF4A" stop-opacity=".02"/></linearGradient><pattern id="g" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" stroke="#C5FF4A" stroke-opacity=".07"/></pattern></defs>
 <path fill="url(#g)" d="M0 0h600v300H0z"/>
-<g stroke="#54F6B1" stroke-opacity=".3"><path d="M20 85h125l50 50h35M20 205h130l40-40h40M580 85H455l-50 50h-35M580 205H450l-40-40h-40"/><circle cx="300" cy="150" r="126" stroke-dasharray="3 12"/><path d="M300 8v24m0 235v25M155 150h20m250 0h20"/></g>
-<path d="M300 42l82 32v79c0 55-44 87-82 106-38-19-82-51-82-106V74z" fill="url(#s)" stroke="#54F6B1" stroke-width="2"/>
-<path d="M300 60l67 26v67c0 41-32 70-67 89-35-19-67-48-67-89V86z" stroke="#54F6B1" stroke-opacity=".22"/>
-<rect x="274" y="127" width="52" height="46" rx="4" fill="#101D1B" stroke="#54F6B1" stroke-width="2"/>
-<path d="M285 127v-13a15 15 0 0130 0v13m-15 22v10" stroke="#54F6B1" stroke-width="3"/><circle cx="300" cy="146" r="3" fill="#54F6B1"/>
-<g fill="#54F6B1"><circle cx="20" cy="85" r="3"/><circle cx="20" cy="205" r="3"/><circle cx="580" cy="85" r="3"/><circle cx="580" cy="205" r="3"/></g>
+<g stroke="#C5FF4A" stroke-opacity=".3"><path d="M20 85h125l50 50h35M20 205h130l40-40h40M580 85H455l-50 50h-35M580 205H450l-40-40h-40"/><circle cx="300" cy="150" r="126" stroke-dasharray="3 12"/><path d="M300 8v24m0 235v25M155 150h20m250 0h20"/></g>
+<path d="M300 42l82 32v79c0 55-44 87-82 106-38-19-82-51-82-106V74z" fill="url(#s)" stroke="#C5FF4A" stroke-width="2"/>
+<path d="M300 60l67 26v67c0 41-32 70-67 89-35-19-67-48-67-89V86z" stroke="#C5FF4A" stroke-opacity=".22"/>
+<rect x="274" y="127" width="52" height="46" rx="4" fill="#151D0C" stroke="#C5FF4A" stroke-width="2"/>
+<path d="M285 127v-13a15 15 0 0130 0v13m-15 22v10" stroke="#C5FF4A" stroke-width="3"/><circle cx="300" cy="146" r="3" fill="#C5FF4A"/>
+<g fill="#C5FF4A"><circle cx="20" cy="85" r="3"/><circle cx="20" cy="205" r="3"/><circle cx="580" cy="85" r="3"/><circle cx="580" cy="205" r="3"/></g>
 <g fill="#A7BBB4" font-family="Consolas,monospace" font-size="10" letter-spacing="1"><text x="30" y="72">SOURCE CODE</text><text x="30" y="228">DEPENDENCIES</text><text x="462" y="72">CERTIFICATES</text><text x="466" y="228">EVIDENCE</text><text x="245" y="285">CRYPTOGRAPHY</text></g>
 </svg>

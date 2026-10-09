@@ -1,6 +1,6 @@
 // Structured risk report viewer — migration priorities, distribution, blind spots.
 import { lazy, Suspense, useMemo, useState, useEffect, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { downloadReport, getRiskReport, getEvaluation } from "../api/client";
 import type { OutputPagination } from "../api/client";
 import { RiskBadge } from "../components/RiskBadge";
@@ -40,6 +40,7 @@ export default function RiskReportPage() {
 
   useEffect(() => {
     let cancelled = false;
+    setError("");
     const risk = filter === "all" ? undefined : (filter.toUpperCase() as RiskLabel);
     Promise.all([
       getRiskReport(scanId, { limit: PAGE_SIZE, offset, risk, query }),
@@ -81,7 +82,7 @@ export default function RiskReportPage() {
     setExporting(true);
     try {
       await downloadReport(
-        `/api/reports/risk.csv${scanId ? `?scan_id=${scanId}` : ""}`,
+        `/api/reports/risk.csv?scan_id=${report.scan_id}`,
         `ecdat-risk-report-${report.scan_id || "latest"}.csv`,
       );
       setExportedCount(report.pagination?.total ?? sorted.length);
@@ -127,7 +128,7 @@ export default function RiskReportPage() {
   const quantumCount = Number(report.summary?.quantum_vulnerable ?? 0);
 
   return (
-    <>
+    <div className="reports-workspace">
       <section className="hero compact">
         <div>
           <p className="eyebrow">Migration roadmap</p>
@@ -139,6 +140,9 @@ export default function RiskReportPage() {
           </p>
         </div>
         <div className="hero-actions">
+          <Link className="button secondary" to={`/reports/scans/${report.scan_id}`}>
+            Overall scan report
+          </Link>
           <button
             className="button secondary"
             disabled={exporting || sorted.length === 0}
@@ -147,6 +151,42 @@ export default function RiskReportPage() {
             {exporting ? "Exporting..." : "Export CSV"}
           </button>
         </div>
+      </section>
+
+      <section className="reports-metrics" aria-label="Scan risk overview">
+        <MetricBlock label="Assets in this scan" raw={String(pagination.total)} />
+        <MetricBlock label="Urgent migration" raw={String(criticalCount + highCount)} />
+        <MetricBlock label="Quantum-exposed" raw={String(quantumCount)} />
+        <MetricBlock label="Measured coverage" raw={`${report.coverage_pct}%`} />
+      </section>
+
+      <section className="reports-library" aria-label="Available reports">
+        <Link to={`/reports/scans/${report.scan_id}`}>
+          <span className="eyebrow">01 · Full scan</span>
+          <h2>
+            Overall scan report <span aria-hidden="true">↗</span>
+          </h2>
+          <p>Algorithm summaries, evidence quality, coverage, and migration priorities.</p>
+          <small>Markdown · Full inventory CSV · Print / PDF</small>
+        </Link>
+        <Link to={`/assets?scan_id=${report.scan_id}`}>
+          <span className="eyebrow">02 · Individual findings</span>
+          <h2>
+            Occurrence reports <span aria-hidden="true">↗</span>
+          </h2>
+          <p>
+            Open any finding for its exact location, configuration, evidence, and recommendation.
+          </p>
+          <small>Browse inventory · Detailed report for each finding</small>
+        </Link>
+        <Link to={`/cbom?scan_id=${report.scan_id}`}>
+          <span className="eyebrow">03 · Evidence delivery</span>
+          <h2>
+            Cryptographic BOM <span aria-hidden="true">↗</span>
+          </h2>
+          <p>Inspect the scan’s component inventory and export structured evidence.</p>
+          <small>View CBOM · Full JSON export</small>
+        </Link>
       </section>
 
       {/* Summary chips */}
@@ -176,7 +216,7 @@ export default function RiskReportPage() {
         )}
         {quantumCount > 0 && (
           <span className="report-chip report-chip--quantum">
-            <strong>{quantumCount}</strong> hybrid-ready
+            <strong>{quantumCount}</strong> quantum-exposed
           </span>
         )}
         {evaluation?.available && (
@@ -187,17 +227,31 @@ export default function RiskReportPage() {
       </section>
 
       <section className="dashboard-grid">
-        <article className="panel span-full report-priorities-panel">
+        <article className="panel reports-distribution">
           <div className="panel-title">
             <h2>Risk distribution</h2>
-            <p>Assets sorted by migration urgency</p>
+            <p>Full-scan counts by migration urgency, independent of the table filters.</p>
           </div>
           <Suspense fallback={<div className="skeleton" style={{ height: 250 }} />}>
             <RiskDistributionChart data={distribution} />
           </Suspense>
         </article>
 
-        <article className="panel">
+        <article className="panel reports-assurance">
+          <div className="panel-title">
+            <h2>Assessment context</h2>
+          </div>
+          <p>
+            <strong>{criticalCount + highCount}</strong> findings have critical or high migration
+            priority in this scan. Review their recorded reasons before planning remediation.
+          </p>
+          <p>
+            <strong>{quantumCount}</strong> findings are flagged for quantum exposure. Exposure
+            alone does not establish replacement compatibility.
+          </p>
+          <Link className="row-link" to={`/scans/${report.scan_id}`}>
+            Inspect scan coverage and processing →
+          </Link>
           <div className="panel-title">
             <h2>Evaluation corpus</h2>
             {evaluation?.available && (
@@ -238,7 +292,7 @@ export default function RiskReportPage() {
           )}
         </article>
 
-        <article className="panel span-2">
+        <article className="panel span-full report-priorities-panel">
           <div className="panel-title">
             <h2>Migration priorities</h2>
             <p>
@@ -290,8 +344,16 @@ export default function RiskReportPage() {
                   {visiblePriorities.map((p) => (
                     <tr key={p.asset_id}>
                       <td>
-                        <strong>{p.algorithm}</strong>
-                        <small>Asset #{p.asset_id}</small>
+                        <Link
+                          to={`/reports/algorithms/${p.asset_id}`}
+                          aria-label={`Detailed ${p.algorithm} report for asset ${p.asset_id}`}
+                        >
+                          <strong>{p.algorithm}</strong>
+                        </Link>
+                        <small>
+                          Asset #{p.asset_id} ·{" "}
+                          <Link to={`/reports/algorithms/${p.asset_id}`}>Detailed report</Link>
+                        </small>
                       </td>
                       <td>
                         <span className="path">{p.location}</span>
@@ -342,11 +404,15 @@ export default function RiskReportPage() {
                 <p>{gap}</p>
               </div>
             ))}
-            {!report.blind_spots?.length && <p className="muted">No blind spots detected.</p>}
+            {!report.blind_spots?.length && (
+              <p className="muted">
+                No blind spots were recorded. This does not establish complete coverage.
+              </p>
+            )}
           </div>
         </article>
       </section>
-    </>
+    </div>
   );
 }
 

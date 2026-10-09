@@ -41,6 +41,9 @@ describe("RiskReportPage", () => {
 
     expect(screen.getByRole("status")).toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: "Risk report" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /01.*Overall scan report/ })).toHaveAttribute("href", "/reports/scans/7");
+    expect(screen.getByRole("link", { name: /02.*Occurrence reports/ })).toHaveAttribute("href", "/assets?scan_id=7");
+    expect(screen.getByRole("link", { name: /03.*Cryptographic BOM/ })).toHaveAttribute("href", "/cbom?scan_id=7");
   });
 
   it("keeps a 10k-result report bounded to the server page", async () => {

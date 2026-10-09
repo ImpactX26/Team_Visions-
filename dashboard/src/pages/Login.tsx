@@ -1,6 +1,8 @@
 // Login page — ECDAT design system.
 import { useEffect, useId, useState, type FormEvent } from "react";
 import { ApiError, login } from "../api/client";
+import { motion, useReducedMotion } from "framer-motion";
+import { workspaceEase } from "../components/WorkspaceMotion";
 
 export default function Login({
   onSuccess,
@@ -13,6 +15,19 @@ export default function Login({
   const [password, setPassword] = useState("");
   const [error, setError] = useState(message);
   const [busy, setBusy] = useState(false);
+  const reduced = useReducedMotion();
+  const reveal = {
+    hidden: { opacity: 0, y: reduced ? 0 : 14 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: reduced ? 0 : 0.45, ease: workspaceEase },
+    },
+  };
+  const sequence = {
+    hidden: {},
+    visible: { transition: { staggerChildren: reduced ? 0 : 0.08 } },
+  };
 
   useEffect(() => setError(message), [message]);
 
@@ -42,11 +57,17 @@ export default function Login({
         Skip to main content
       </a>
       <main className="login-shell" id="main-content" tabIndex={-1}>
-        <aside className="login-context" aria-label="About ECDAT">
+        <motion.aside
+          className="login-context"
+          aria-label="About ImpactX"
+          initial={reduced ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduced ? 0 : 0.3, ease: workspaceEase }}
+        >
           <div className="login-identity">
             <img className="brand-mark" src="/ecdat-logo.svg" alt="" aria-hidden="true" />
             <div>
-              <div className="login-identity-name">ECDAT</div>
+              <div className="login-identity-name">ImpactX</div>
               <div className="login-identity-subtitle">Discovery Assurance</div>
             </div>
           </div>
@@ -60,29 +81,55 @@ export default function Login({
             <p>
               Discover cryptography. Trace the evidence. Prioritize your path to quantum readiness.
             </p>
-            <img
+            <motion.img
               className="login-signal"
+              initial={reduced ? false : { opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: reduced ? 0 : 0.6, ease: workspaceEase }}
               src="/crypto-shield.svg"
               alt="Source, dependencies and certificates connected to a cryptographic shield"
             />
           </div>
-        </aside>
-        <section className="login-panel--form" aria-labelledby="login-heading">
-          <div className="login-card">
-            <h1 id="login-heading" className="login-card-title">
+        </motion.aside>
+        <motion.section
+          className="login-panel--form"
+          aria-labelledby="login-heading"
+          initial={reduced ? false : { opacity: 1, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduced ? 0 : 0.3, ease: workspaceEase }}
+        >
+          <motion.div
+            className="login-card"
+            variants={sequence}
+            initial={reduced ? false : "hidden"}
+            animate="visible"
+          >
+            <motion.h1 variants={reveal} id="login-heading" className="login-card-title">
               Sign in
-            </h1>
-            <p className="login-card-desc">
+            </motion.h1>
+            <motion.p variants={reveal} className="login-card-desc">
               Access your cryptographic inventory and risk workspace.
-            </p>
+            </motion.p>
 
             {error && (
-              <div className="login-error" id="login-error" role="alert">
+              <motion.div
+                initial={reduced ? false : { opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: reduced ? 0 : 0.2 }}
+                className="login-error"
+                id="login-error"
+                role="alert"
+              >
                 {error}
-              </div>
+              </motion.div>
             )}
 
-            <form onSubmit={submit} aria-busy={busy} className="login-form">
+            <motion.form
+              variants={reveal}
+              onSubmit={submit}
+              aria-busy={busy}
+              className="login-form"
+            >
               <LoginField
                 label="Username"
                 value={username}
@@ -102,22 +149,25 @@ export default function Login({
                 describedBy={error ? "login-error" : undefined}
               />
 
-              <button
+              <motion.button
+                whileHover={reduced || busy || !username || !password ? undefined : { y: -2 }}
+                whileTap={reduced || busy || !username || !password ? undefined : { scale: 0.98 }}
+                transition={{ duration: 0.15 }}
                 type="submit"
                 className="button wide login-submit"
                 disabled={busy || !username || !password}
               >
                 {busy && <span className="spinner login-spinner" aria-hidden="true" />}
                 {busy ? "Signing in…" : "Sign in"}
-              </button>
-            </form>
+              </motion.button>
+            </motion.form>
 
-            <div className="login-hint" role="note">
+            <motion.div variants={reveal} className="login-hint" role="note">
               <strong>Administrator-provisioned access</strong>
               <span>Use your configured account. There are no default passwords.</span>
-            </div>
-          </div>
-        </section>
+            </motion.div>
+          </motion.div>
+        </motion.section>
       </main>
     </>
   );

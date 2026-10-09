@@ -6,10 +6,10 @@ const FRONTEND_BUDGETS = {
   maxBundleGzipKb: 500,
   // RNSIT baseline after the evidence, history, and responsive assurance views.
   // Keep narrow headroom so a material regression still fails the build.
-  // Review and lazy scan comparison: 817.7KB; retain narrow feature headroom.
-  maxTotalJsKb: 820,
-  // Review form layout adds <0.3KB above the prior 155KB stylesheet.
-  maxCssKb: 156,
+  // Includes lazy occurrence and overall scan reports; measured total 854.7KB.
+  maxTotalJsKb: 858,
+  // ImpactX login, print layout, and report library: measured CSS 157.4KB.
+  maxCssKb: 159,
 };
 
 export default defineConfig(({ mode }) => ({

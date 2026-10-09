@@ -1,7 +1,138 @@
-/* Reference direction: opaque black/navy, crisp rules and scarce green. */
+/* ECDAT cyber workspace. Opaque surfaces, editorial hierarchy, quiet chrome.
+   Structural page CSS is shared; this file owns the final visual composition. */
 #root {
   background: var(--ws-bg);
   background-image: none;
+}
+.page {
+  padding-top: 32px;
+  padding-bottom: 48px;
+}
+.hero {
+  border-bottom: 1px solid var(--ws-border);
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+}
+.hero > div > p:not(.eyebrow) {
+  max-width: 64ch;
+  line-height: 1.65;
+  font-size: 14px;
+}
+.app-shell .eyebrow {
+  font: 500 12px var(--ws-mono);
+  letter-spacing: 0.08em;
+}
+.brand small {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.035em;
+  text-transform: none;
+}
+.topbar-nav a:hover {
+  color: var(--ws-text);
+  background: var(--ws-surface-muted);
+}
+.topbar-nav a.active {
+  color: var(--ws-primary);
+}
+.dashboard-page .dashboard-assurance,
+.dashboard-page .dashboard-trends,
+.dashboard-page .dashboard-attention,
+.dashboard-page .dashboard-urgent,
+.dashboard-page .dashboard-recent {
+  padding: 24px;
+}
+.dashboard-page .posture-number {
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.dashboard-page .posture-risk-bar {
+  height: 8px;
+}
+.assurance-metric,
+.stat {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.assurance-metric strong,
+.urgent-count,
+.stat strong,
+.inventory-total {
+  font-family: var(--ws-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.urgent-link,
+.attention-row {
+  border-color: var(--ws-border);
+  padding: 14px;
+}
+.judge-path {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ws-border);
+  border-radius: 0;
+  padding: 0 0 16px;
+}
+table {
+  font-variant-numeric: tabular-nums;
+}
+thead th {
+  color: var(--ws-text-secondary);
+  background: var(--ws-surface-muted);
+  font: 500 12px var(--ws-mono);
+  letter-spacing: 0.025em;
+  text-transform: none;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+tbody td {
+  border-color: var(--ws-border);
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 13px;
+}
+.row-link {
+  text-decoration: none;
+}
+.row-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.risk-badge,
+.status,
+.badge {
+  border-width: 1px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+@media (max-width: 760px) {
+  .page {
+    padding-top: 24px;
+  }
+  .hero h1 {
+    font-size: 26px;
+  }
+  .hero-actions {
+    flex-wrap: wrap;
+  }
+  .dashboard-page .dashboard-assurance,
+  .dashboard-page .dashboard-trends,
+  .dashboard-page .dashboard-attention,
+  .dashboard-page .dashboard-urgent,
+  .dashboard-page .dashboard-recent {
+    padding: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button:active:not(:disabled) {
+    transform: none;
+  }
 }
 :root {
   --border: var(--ws-border);
@@ -55,8 +186,9 @@ tbody tr:hover td:first-child {
   letter-spacing: 0.06em;
 }
 .topbar-nav a {
-  font-family: var(--ws-mono);
+  font-family: var(--ws-font);
   font-size: 13px;
+  font-weight: 500;
 }
 [data-theme="dark"] .topbar .topbar-nav a.active {
   color: var(--ws-primary);
@@ -79,13 +211,14 @@ tbody tr:hover td:first-child {
   font-weight: 600;
   letter-spacing: -0.035em;
   line-height: 1.15;
+  font-size: clamp(26px, 2.5vw, 34px);
 }
 .hero .eyebrow::before {
   display: none;
 }
 .panel-title h2,
 .recent-header h2 {
-  font: 600 15px var(--ws-mono);
+  font: 600 16px var(--ws-font);
   letter-spacing: 0.01em;
 }
 :is(
@@ -113,6 +246,7 @@ tbody tr:hover td:first-child {
 }
 .dashboard-posture {
   background: #08120a;
+  border-top: 2px solid var(--ws-border-strong);
 }
 :is(
   .button,
@@ -132,7 +266,8 @@ tbody tr:hover td:first-child {
   border-radius: 3px;
 }
 .button {
-  font: 500 13px var(--ws-mono);
+  font: 600 13px var(--ws-font);
+  min-height: 44px;
   box-shadow: none;
 }
 .button:not(.secondary, .ghost, .danger, .scan-start-button, .login-submit) {
@@ -281,6 +416,9 @@ tbody tr:hover td:first-child {
 .login-card-title {
   font-size: 30px;
 }
+.login-submit {
+  font-family: var(--ws-mono);
+}
 @media (min-width: 1151px) {
   .topbar {
     grid-template-columns: 1fr auto;
@@ -294,11 +432,11 @@ tbody tr:hover td:first-child {
     left: 0;
     width: 216px;
     margin: 0;
-    padding: 32px 16px;
+    padding: 28px 16px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
+    gap: 4px;
     background: var(--ws-surface);
     border-right: 1px solid var(--ws-border);
   }
@@ -313,6 +451,7 @@ tbody tr:hover td:first-child {
     min-height: 48px;
     border: 1px solid transparent;
     border-radius: 3px;
+    justify-content: flex-start;
   }
   .topbar-nav a.active {
     background: #08120a;
@@ -326,12 +465,12 @@ tbody tr:hover td:first-child {
     height: auto;
   }
   .topbar-nav .topbar-scan-link {
-    margin: 12px 0;
+    margin: 20px 0;
   }
   .app-shell > main {
     width: calc(100% - 280px);
     margin-left: 248px;
-    max-width: 1500px;
+    max-width: 1400px;
   }
   .app-shell > footer {
     margin-left: 216px;

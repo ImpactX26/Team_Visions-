@@ -29,7 +29,7 @@
 @import "./styles/utilities.css"; /* Focus, tone, and one-off utility classes */
 @import "./styles/workspace.css"; /* Unified assurance workspace — final visual authority */
 @import "./styles/auth.css"; /* Scoped login layout after shared workspace rules */
-@import "./styles/dark-theme.css"; /* Cyber console composition */
+@import "./styles/impactx-theme.css"; /* Default ImpactX black-and-lime theme */
 
 /* ═══════════════════════════════════════════════════════════════════
    Print Styles — reports and dashboards
@@ -237,4 +237,44 @@
     opacity: 1 !important;
     transform: none !important;
   }
+  /* Reports must flow across pages instead of reserving one giant grid. */
+  :root {
+    --ws-bg: #fff;
+    --ws-surface: #fff;
+    --ws-surface-raised: #fff;
+    --ws-surface-muted: #f4f4f4;
+    --ws-text: #000;
+    --ws-text-secondary: #333;
+    --ws-text-tertiary: #444;
+  }
+  #root, .app-shell, main, .panel, .evidence-pre {
+    color: #000 !important;
+    background: #fff !important;
+  }
+  .app-shell { min-height: 0 !important; }
+  .dashboard-grid, .dashboard-rows, .page > div {
+    display: block !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  section, .dashboard-grid, .dashboard-rows, .panel, table {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .panel {
+    padding: 8pt 0 !important;
+    margin-bottom: 8pt !important;
+    border: 0 !important;
+    border-top: 0.5pt solid #ccc !important;
+  }
+  h1, h2, h3, .panel-title, dt, dd, p, li, strong, summary, pre {
+    color: #000 !important;
+  }
+  h2, h3, .panel-title, summary { break-after: avoid; }
+  .facts { display: grid !important; grid-template-columns: 140pt minmax(0, 1fr); gap: 4pt 10pt; }
+  .facts dd { margin: 0; overflow-wrap: anywhere; }
+  .evidence-pre { white-space: pre-wrap !important; overflow: visible !important; max-height: none !important; font-size: 8pt; }
+  footer, .breadcrumb, .panel > .button { display: none !important; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
 }

@@ -334,6 +334,11 @@ export default function ScanDetailPage() {
         </div>
         <div className="hero-actions">
           {detail.status === "completed" && (
+            <Link className="button secondary" to={`/reports/scans/${detail.id}`}>
+              Overall scan report
+            </Link>
+          )}
+          {detail.status === "completed" && (
             <button className="button secondary" disabled={exporting} onClick={handleExport}>
               {exporting ? "Exporting…" : "Export displayed CSV"}
             </button>
